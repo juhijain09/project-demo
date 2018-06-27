@@ -1,0 +1,29 @@
+import { Injectable } from '@angular/core';
+import { Http, Headers, RequestOptions, Response} from '@angular/http';
+import 'rxjs/Rx';
+import { Observable } from 'rxjs';
+import 'rxjs/add/operator/map';
+
+@Injectable()
+export class AssetService {
+
+  constructor(
+    private http: Http ) {  }
+
+    public setRequestObject(apiUrl) {
+      const headers = new Headers({ 'Content-Type': 'application/json' });
+                          headers.append("Access-Control-Allow-Origin" , "*");
+                          headers.append('APIkey', '16d49c9b-de55-4492-99d4-68b7ef1edc83');
+                          headers.append('Access-Control-Allow-Methods', 'GET');
+      const options = new RequestOptions({ headers, withCredentials:true });
+      let requestObj = this.http.get(apiUrl, options);
+      return requestObj;
+  }
+    public getAssetList(apiUrl){
+      return this.setRequestObject(apiUrl)
+      .map((response)=>{
+        console.log('I am here', response.json());
+        return response.json();
+      })
+    }
+}

@@ -1,36 +1,8 @@
-<div class = "container">
-<div class="row">
-	<div class = "col big-box" >
-		<h3>Default_zone</h3>
-  	<span class = "col-3" *ngFor = "let device of assetData">
-    <div *ngIf = "device.zoneName === 'default_zone'" [ngClass] = "{ offline:'StatusGrey', online:'StatusGreen'}
-    [device.beaconStatus]" class="mineWorker">
-    <h5>{{device.description}}</h5>
-    <img src="../../../assets/image/mineWorker.png" >
-  </div>
-  </span>
-</div>
-  <div class = "col big-box" >
-  	<h3>Zone-left</h3>
-  	<span class = "col-3" *ngFor = "let device of assetData">
-    <div *ngIf = "device.zoneName === 'Zone-left'" [ngClass] = "{ offline:'StatusGrey', online:'StatusGreen'}
-    [device.beaconStatus]" class="mineWorker">
-    <h5>{{device.description}}</h5>
-    <img src="../../../assets/image/mineWorker.png"  >
-  </div>
-  </span>
-</div>
-  <div class = "col big-box" >
-  	<h3>Zone-right</h3>
-  	<span class = "col-3" *ngFor = "let device of assetData">
-    <div *ngIf = "device.zoneName === 'Zone-right'" [ngClass] = "{ offline:'StatusGrey', online:'StatusGreen'}
-    [device.beaconStatus]" class="mineWorker">
-    <h5>{{device.description}}</h5>
-    <img src="../../../assets/image/mineWorker.png"  >
-  </div>
-  </span>
-</div>
-</div>
-</div>
+<body><!-- 
+	<img [src]="image" style="width: 100%">
+ -->	<canvas #myCanvas width="100%" 
+style="border:1px " (click) = "getLocationPoint($event)">
+</canvas>
 
-<!-- *ngIf = "device.zoneName === 'default_zone'" -->
+</body>
+

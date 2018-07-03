@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, Renderer2, Inject } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, Renderer2, Inject , OnChanges} from '@angular/core';
 import { AssetService , MessageService} from '../../Services';
 import { mainUrl,
  		 GetDeviceList,
@@ -52,6 +52,13 @@ export class HomeComponent implements AfterViewInit {
 
   	  }
 	public ngOnInit(){
+		this.ReloadBrowser();
+	}
+	public ngOnChanges(){ // check tomorrow
+		this.ngAfterViewInit();
+		this.ReloadBrowser();
+	}
+	public ReloadBrowser(){
 		const apiUrl =  mainUrl + GetDeviceList;
 		this.assetService.getAssetList(apiUrl)
 		.subscribe((data) => {
@@ -65,6 +72,7 @@ export class HomeComponent implements AfterViewInit {
 		 		 	console.log(' i am inside ebc4');
 		 		 	const sender = 'user6';
 		 		 	const sendto = 'user11';
+
 		 		 	const msgtxt = 'Hey you have moved to ' + device.zoneName;
 		 		 	const apiUrl = SendMessage + 'sender=' + sender + '&sendto=' + sendto + '&msgtxt=' + msgtxt ;
 		 		 	this.messageService.SendMessage(apiUrl)
@@ -74,14 +82,13 @@ export class HomeComponent implements AfterViewInit {
 	 		 }
 		 		 this.zone[device.description] = device.zoneName;
 		 	})
-		});  
-		
+		});
 	}
 	public getLocationPoints(worker){
 		var max_width = this.canvas.width;
     	var max_height = this.canvas.height;
 
- 		if (worker.zoneName === "Zone-left") {
+ 		if (worker.zoneName === "Zone-1") {
 	    	const y_scale1 = (max_height *56)/100 ;
     		const x_scale1 = (max_width*23)/100 ;
 	    	const pos_x1 = x_scale1/2;
@@ -92,19 +99,19 @@ export class HomeComponent implements AfterViewInit {
  			const pos_y3 = y_scale1 * 0.75;
  		if(worker.description === 'Wipro EBC 4'){
 			const child1 = document.createElement('div');
-			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker"></i> ';
+			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker" ></i> <div style="color:purple font-size:10px"> '+worker.description+'<div>';
 			this.renderer.appendChild(this.el.nativeElement, child1);	
  		} else if(worker.description === 'Wipro EBC-2'){
 			const child2 = document.createElement('div');
-			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker"></i> ';
+			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker" ></i><div style="color:purple font-size:10px"> '+worker.description+'<div> ';
 			this.renderer.appendChild(this.el.nativeElement, child2);
  		} else{
 			const child3 = document.createElement('div');
-			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker"></i> ';
+			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker" ></i> ';
 			this.renderer.appendChild(this.el.nativeElement, child3);
  		}
 	}	
- 		if (worker.zoneName === "Zone-right") {
+ 		if (worker.zoneName === "Zone-2") {
     		const y_scale2 = (max_height *56)/100 ;
     		const xmin_scale2 = (max_width*27)/100 
     		const xmax_scale2 = (max_width*45)/100;
@@ -118,19 +125,19 @@ export class HomeComponent implements AfterViewInit {
 
  		if(worker.description === 'Wipro EBC 4'){
 			const child1 = document.createElement('div');
-			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker"></i> ';
+			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker" ></i> <div style="color:purple font-size:10px"> '+worker.description+'<div>';
 			this.renderer.appendChild(this.el.nativeElement, child1);	
  		} else if(worker.description === 'Wipro EBC-2'){
 			const child2 = document.createElement('div');
-			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker"></i> ';
+			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker" ></i><div style="color:purple font-size:10px"> '+worker.description+'<div> ';
 			this.renderer.appendChild(this.el.nativeElement, child2);
  		} else{
 			const child3 = document.createElement('div');
-			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker"></i> ';
+			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker" ></i> ';
 			this.renderer.appendChild(this.el.nativeElement, child3);
  		}
 	}
-	 		if (worker.zoneName === "zone-1") {
+	 		if (worker.zoneName === "Zone-3") {
     		var x_scale3 = (max_width *29)/100 ;
     		var ymin_scale3 = (max_height*59)/100 
     		var ymax_scale3 = (max_height*80)/100;
@@ -144,15 +151,15 @@ export class HomeComponent implements AfterViewInit {
 
  		if(worker.description === 'Wipro EBC 4'){
 			const child1 = document.createElement('div');
-			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker"></i> ';
+			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker" ></i> <div style="color:purple font-size:10px"> '+worker.description+'<div>';
 			this.renderer.appendChild(this.el.nativeElement, child1);	
  		} else if(worker.description === 'Wipro EBC-2'){
 			const child2 = document.createElement('div');
-			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker"></i> ';
+			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker" ></i><div style="color:purple font-size:10px"> '+worker.description+'<div> ';
 			this.renderer.appendChild(this.el.nativeElement, child2);
  		} else{
 			const child3 = document.createElement('div');
-			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker"></i> ';
+			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker" ></i> ';
 			this.renderer.appendChild(this.el.nativeElement, child3);
  		}
 	}
@@ -170,15 +177,15 @@ export class HomeComponent implements AfterViewInit {
 
  		if(worker.description === 'Wipro EBC 4'){
 			const child1 = document.createElement('div');
-			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker"></i>';
+			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker "  ></i><div style="color:purple font-size:10px"> '+worker.description+'<div>';
 			this.renderer.appendChild(this.el.nativeElement, child1);	
  		} else if(worker.description === 'Wipro EBC-2'){
 			const child2 = document.createElement('div');
-			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker"></i> ';
+			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker" ></i><div style="color:purple font-size:10px"> '+worker.description+'<div> ';
 			this.renderer.appendChild(this.el.nativeElement, child2);
  		} else{
 			const child3 = document.createElement('div');
-			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker"></i> ';
+			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker" ></i> ';
 			this.renderer.appendChild(this.el.nativeElement, child3);
  		}
 	}

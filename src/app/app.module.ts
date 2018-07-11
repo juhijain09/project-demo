@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { declarations } from './declaration';
 import { AppComponent } from './app.component';
+
 import {
   NgModule,
   ApplicationRef,
@@ -18,6 +19,7 @@ import {
 import { AssetService,
          MessageService } from './Services';
 import { AppState, InternalStateType } from './app.service';
+import { ChatWindowComponent } from './Component/chat-window/chat-window.component';
 
 const APP_PROVIDERS = [
   AppState
@@ -26,7 +28,7 @@ const APP_PROVIDERS = [
 const providers = [ AssetService ,APP_PROVIDERS];
 const imports = [
     BrowserModule,
-    HttpModule
+    HttpModule,
   ];
   interface StoreType {
     state: InternalStateType;

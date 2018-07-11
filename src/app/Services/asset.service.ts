@@ -12,19 +12,21 @@ export class AssetService {
 
     public setRequestObject(apiUrl) {
       const headers = new Headers({ 'Content-Type': 'application/json' });
-                          headers.append("Access-Control-Allow-Origin" , "*");
-                          headers.append('APIkey', '16d49c9b-de55-4492-99d4-68b7ef1edc83');
-                          headers.append('Access-Control-Allow-Methods', 'GET');
-      const options = new RequestOptions({ headers, withCredentials:true });
+                          //headers.append("Access-Control-Allow-Origin" , "*");
+                          headers.append('APIKey', '16d49c9b-de55-4492-99d4-68b7ef1edc83');
+                         // headers.append('Access-Control-Allow-Methods', 'GET');
+    const options = new RequestOptions({headers});
       let requestObj = this.http.get(apiUrl, options);
       return requestObj;
   }
     public getAssetList(apiUrl){
+      console.log('apiUrl');
       return this.setRequestObject(apiUrl)
-      .repeatWhen(() => Observable.interval(2000))
+      // .repeatWhen(() => Observable.interval(2000))
       .map((response)=>{
         console.log('I am here', response.json());
         return response.json();
       })
     }
 }
+//, withCredentials:true

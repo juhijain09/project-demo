@@ -1,3 +1,3 @@
-2018/07/11-15:09:45.487 13122 Reusing MANIFEST /var/project/workers-safety/Default/Sync Data/LevelDB/MANIFEST-000001
-2018/07/11-15:09:45.487 13122 Recovering log #3
-2018/07/11-15:09:45.514 13122 Reusing old log /var/project/workers-safety/Default/Sync Data/LevelDB/000003.log 
+2018/07/19-12:10:35.135 6681 Reusing MANIFEST /var/project/workers-safety/Default/Sync Data/LevelDB/MANIFEST-000001
+2018/07/19-12:10:35.135 6681 Recovering log #3
+2018/07/19-12:10:35.135 6681 Reusing old log /var/project/workers-safety/Default/Sync Data/LevelDB/000003.log 

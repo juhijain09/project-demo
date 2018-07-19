@@ -1,6 +1,6 @@
-2018/07/11-15:09:53.135 13257 Reusing MANIFEST /var/project/workers-safety/Default/Session Storage/MANIFEST-000001
-2018/07/11-15:09:53.135 13257 Recovering log #27
-2018/07/11-15:09:53.291 13257 Reusing old log /var/project/workers-safety/Default/Session Storage/000027.log 
-2018/07/11-15:10:11.845 13410 Level-0 table #32: started
-2018/07/11-15:10:11.912 13410 Level-0 table #32: 16668 bytes OK
-2018/07/11-15:10:11.945 13410 Delete type=0 #27
+2018/07/19-12:10:36.684 6681 Reusing MANIFEST /var/project/workers-safety/Default/Session Storage/MANIFEST-000001
+2018/07/19-12:10:36.684 6681 Recovering log #37
+2018/07/19-12:10:36.685 6681 Reusing old log /var/project/workers-safety/Default/Session Storage/000037.log 
+2018/07/19-12:44:57.253 11764 Level-0 table #43: started
+2018/07/19-12:44:57.303 11764 Level-0 table #43: 14156 bytes OK
+2018/07/19-12:44:57.369 11764 Delete type=0 #37

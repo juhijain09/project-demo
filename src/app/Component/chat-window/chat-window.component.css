@@ -1,52 +1,67 @@
-.modal {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1050;
-    overflow: hidden;
-    -webkit-overflow-scrolling: touch;
-    outline: 0;
+.msgbox {
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    height: auto;
+    overflow: -webkit-paged-x;
 }
- 
-.fade {
-    opacity: 0;
-    -webkit-transition: opacity .15s linear;
-    -o-transition: opacity .15s linear;
-    transition: opacity .15s linear;
+
+.darker {
+    border-color: #ccc;
+    background-color: #ddd;
 }
- 
-.fade.in {
-    opacity: 1;
+
+.container::after {
+    content: "";
+    clear: both;
+    display: table;
 }
- 
-.modal-dialog {
-    position: relative;
-    width: auto;
-    margin: 10px;
+
+.container img {
+    float: left;
+    max-width: 60px;
+    width: 50%;
+    margin-right: 20px;
+    border-radius: 50%;
 }
- 
-.modal.in .modal-dialog {
-    -webkit-transform: translate(0,0);
-    -ms-transform: translate(0,0);
-    -o-transform: translate(0,0);
-    transform: translate(0,0);
+
+.container img.right {
+    float: right;
+    margin-left: 20px;
+    margin-right:0;
 }
- 
-.modal.fade .modal-dialog {
-    -webkit-transition: -webkit-transform .3s ease-out;
-    -o-transition: -o-transform .3s ease-out;
-    transition: transform .3s ease-out;
-    -webkit-transform: translate(0,-25%);
-    -ms-transform: translate(0,-25%);
-    -o-transform: translate(0,-25%);
-    transform: translate(0,-25%);
+
+.time-right {
+    /*float: right;*/
+    color: #aaa;
 }
- 
-@media (min-width: 768px) {
-    .modal-dialog {
-        width: 600px;
-        margin: 30px auto;
-    }
+.chat-right{
+    float:right;
+}
+
+.time-left {
+    float: left;
+    color: #999;
+}
+.chat-window{
+/*    width: 30%;
+    float: right;*/
+}
+.main-chatbox{
+    background:#b8dee8;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 10px;
+    overflow-y: scroll;
+    max-height: 50%;
+}
+.fa {
+font-size: 30px;
+float: right;
+padding-left:500px;
+}
+.btn-info{
+    padding: 10px;
 }

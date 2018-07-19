@@ -1,12 +1,20 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, Renderer2, Inject , OnChanges} from '@angular/core';
-import { AssetService , MessageService} from '../../Services';
+import { DOCUMENT } from '@angular/common';
+import * as fromRoot from '../../reducers';
+import { Store } from '@ngrx/store';
+import * as _ from 'lodash';
+
+import { AssetService , MessageService, MySqlService} from '../../Services';
 import { mainUrl,
  		 GetDeviceList,
  		 assetName,
  		 SendMessage } from '../../constants';
 import { AssetDataParser } from '../../parser';
-import * as _ from 'lodash';
-import { DOCUMENT } from '@angular/common';
+
+import { ToggleChatWindowAction, WorkerChangeAction } from '../../action';
+import { HostListener } from '@angular/core'
+
+import * as moment from 'moment';
 
 
 @Component({
@@ -26,19 +34,28 @@ export class HomeComponent implements AfterViewInit {
 	public zone2;
 	public zone3;
 	public canvas2;
-
+	public isChatWindowVisible$;
+	public records;
 	@ViewChild("myCanvas") myCanvas;
 
-  constructor(private assetService: AssetService,
-  			  private messageService: MessageService,
-  			  private el: ElementRef, private renderer: Renderer2, @Inject(DOCUMENT) private document) {
-
-  			_.forEach(assetName , (loc)=>{
-  				this.zone[loc] = '';
-  			});
-
+  constructor(
+	  private assetService: AssetService,
+	  private messageService: MessageService,
+	  private mysqlService: MySqlService,
+	  private el: ElementRef, 
+	  private renderer: Renderer2, 
+	  @Inject(DOCUMENT) private document,
+	  public store: Store<fromRoot.State>) {
+	
+		_.forEach(assetName , (loc)=>{
+			this.zone[loc] = '';
+	});
+	  this.isChatWindowVisible$ = store.select(fromRoot.getChatWindowStatus);
   	}
-
+	@HostListener('window:resize', ['$event'])
+    onResize(event){
+    this.ngAfterViewInit();
+   }
   	public ngAfterViewInit() {
   	 	this.canvas = this.myCanvas.nativeElement;
   	 	this.context = this.canvas.getContext("2d");
@@ -46,21 +63,26 @@ export class HomeComponent implements AfterViewInit {
   	 		this.source = new Image(); 
     		this.source.crossOrigin = 'Anonymous';
     		this.source.onload = () => {
-    		this.canvas.height = this.source.height;
-    		this.canvas.width = this.source.width;
-    		this.context.drawImage(this.source, 0, 0);
+    			console.log(this.source.width);
+    		this.canvas.height = window.innerHeight;
+    		this.canvas.width = window.innerWidth;
+    		this.context.drawImage(this.source, 0, 0,window.innerWidth, window.innerHeight);
 		    this.image = this.canvas.toDataURL();  
 		    		};
     		this.source.src = this.image;
 
   	  }
 	public ngOnInit(){
+	  this.mysqlService.getUsers()
+	  .map(res => res.json())
+	  .subscribe(records => this.records = records);
 		this.ReloadBrowser();
 	}
-	public ngOnChanges(){ // check tomorrow
-		this.ngAfterViewInit();
-		this.ReloadBrowser();
-	}
+	// public ngOnChanges(){
+	// 	console.log('inside changes window');
+	// 	this.ngAfterViewInit();
+	// 	this.ReloadBrowser();
+	// }
 	public ReloadBrowser(){
 		const apiUrl =  mainUrl + GetDeviceList;
 		this.assetService.getAssetList(apiUrl)
@@ -88,9 +110,7 @@ export class HomeComponent implements AfterViewInit {
 		});
 	}
 
-	public getChatwindow(e){
-		console.log('inside chat window',e);
-	}
+
 	public getLocationPoints(worker){
 		var max_width = this.canvas.width;
     	var max_height = this.canvas.height;
@@ -106,15 +126,17 @@ export class HomeComponent implements AfterViewInit {
  			const pos_y3 = y_scale1 * 0.75;
  		if(worker.description === 'Wipro EBC 4'){
 			const child1 = this.renderer.createElement('div');
-			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker" (click) = "getChatwindow()"></i> <div style="color:purple font-size:10px"> '+worker.description+'<div>';
-			this.renderer.appendChild(this.el.nativeElement, child1);	
+			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker"  id = "Wipro-EBC-4" ></i> <div style="color:purple font-size:10px"> '+worker.description+'<div>';
+			this.renderer.appendChild(this.el.nativeElement, child1);
+			this.el.nativeElement.querySelector('#Wipro-EBC-4').addEventListener('click',this.getChatwindow.bind(this));	
  		} else if(worker.description === 'Wipro EBC-2'){
 			const child2 = this.renderer.createElement('div');
-			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker" (click) = "getChatwindow()"></i><div style="color:purple font-size:10px"> '+worker.description+'<div> ';
+			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker" id = "Wipro-EBC-2" ></i><div style="color:purple font-size:10px"> '+worker.description+'<div> ';
 			this.renderer.appendChild(this.el.nativeElement, child2);
+			this.el.nativeElement.querySelector('#Wipro-EBC-2').addEventListener('click',this.getChatwindow.bind(this));
  		} else{
 			const child3 = this.renderer.createElement('div');
-			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker" (click) = "getChatwindow()"></i> ';
+			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker" ></i> ';
 			this.renderer.appendChild(this.el.nativeElement, child3);
  		}
 	}	
@@ -132,15 +154,17 @@ export class HomeComponent implements AfterViewInit {
 
  		if(worker.description === 'Wipro EBC 4'){
 			const child1 = this.renderer.createElement('div');
-			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker" (click) = "getChatwindow()"></i> <div style="color:purple font-size:10px"> '+worker.description+'<div>';
-			this.renderer.appendChild(this.el.nativeElement, child1);	
+			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker"  id = "Wipro-EBC-4" ></i> <div style="color:purple font-size:10px"> '+worker.description+'<div>';
+			this.renderer.appendChild(this.el.nativeElement, child1);
+			this.el.nativeElement.querySelector('#Wipro-EBC-4').addEventListener('click',this.getChatwindow.bind(this));	
  		} else if(worker.description === 'Wipro EBC-2'){
 			const child2 = this.renderer.createElement('div');
-			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker" (click) = "getChatwindow()"></i><div style="color:purple font-size:10px"> '+worker.description+'<div> ';
+			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker" id = "Wipro-EBC-2" ></i><div style="color:purple font-size:10px"> '+worker.description+'<div> ';
 			this.renderer.appendChild(this.el.nativeElement, child2);
+			this.el.nativeElement.querySelector('#Wipro-EBC-2').addEventListener('click',this.getChatwindow.bind(this));
  		} else{
 			const child3 = this.renderer.createElement('div');
-			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker" (click) = "getChatwindow()"></i> ';
+			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker" ></i> ';
 			this.renderer.appendChild(this.el.nativeElement, child3);
  		}
 	}
@@ -158,15 +182,17 @@ export class HomeComponent implements AfterViewInit {
 
  		if(worker.description === 'Wipro EBC 4'){
 			const child1 = this.renderer.createElement('div');
-			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker" (click) = "getChatwindow()"></i> <div style="color:purple font-size:10px"> '+worker.description+'<div>';
-			this.renderer.appendChild(this.el.nativeElement, child1);	
+			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker"  id = "Wipro-EBC-4" ></i> <div style="color:purple font-size:10px"> '+worker.description+'<div>';
+			this.renderer.appendChild(this.el.nativeElement, child1);
+			this.el.nativeElement.querySelector('#Wipro-EBC-4').addEventListener('click',this.getChatwindow.bind(this));	
  		} else if(worker.description === 'Wipro EBC-2'){
 			const child2 = this.renderer.createElement('div');
-			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker" (click) = "getChatwindow()"></i><div style="color:purple font-size:10px"> '+worker.description+'<div> ';
+			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker"  id = "Wipro-EBC-2" ></i><div style="color:purple font-size:10px"> '+worker.description+'<div> ';
 			this.renderer.appendChild(this.el.nativeElement, child2);
+			this.el.nativeElement.querySelector('#Wipro-EBC-2').addEventListener('click',this.getChatwindow.bind(this));
  		} else{
 			const child3 = this.renderer.createElement('div');
-			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker" (click) = "getChatwindow()"></i> ';
+			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker"  ></i> ';
 			this.renderer.appendChild(this.el.nativeElement, child3);
  		}
 	}
@@ -184,28 +210,32 @@ export class HomeComponent implements AfterViewInit {
 
  		if(worker.description === 'Wipro EBC 4'){
  			const child1 = this.renderer.createElement('div');
- 			var tempname = "juhi";
-			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker " id = {{worker.description}}></i><div style="color:purple font-size:10px"> '+worker.description+'<div>';
+			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker " id = "Wipro-EBC-4"</i><div style="color:purple font-size:10px"> '+worker.description+'<div>';
 			this.renderer.appendChild(this.el.nativeElement, child1);
-			const selector = '#' + worker.description;
-			console.log(this.el.nativeElement.querySelector(selector).addEventListener('click',this.getChatwindow.bind(this)));
+			this.el.nativeElement.querySelector('#Wipro-EBC-4').addEventListener('click',this.getChatwindow.bind(this));
 
  		} else if(worker.description === 'Wipro EBC-2'){
 			const child2 = this.renderer.createElement('div');
-			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker" id = "WE2""></i><div style="color:purple font-size:10px"> '+worker.description+'<div> ';
+			child2.innerHTML ='<div style="position:absolute;  left:'+pos_x2+'px; top:'+pos_y2+'px;"><i class="flaticon-worker" id = "Wipro-EBC-2"></i><div style="color:purple font-size:10px"> '+worker.description+'<div> ';
 			this.renderer.appendChild(this.el.nativeElement, child2);
+			this.el.nativeElement.querySelector('#Wipro-EBC-2').addEventListener('click',this.getChatwindow.bind(this));
  		} else{
 			const child3 = this.renderer.createElement('div');
-			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker" (click) = "getChatwindow()"></i> ';
+			child3.innerHTML ='<div style="position:absolute;  left:'+pos_x3+'px; top:'+pos_y3+'px;"><i class="flaticon-worker" ></i> ';
 			this.renderer.appendChild(this.el.nativeElement, child3);
  		}
 	}
 
 	return;
 	}
-	public getLocationPoint(event){
-		
+	public getLocationPoint(event){		
 		console.log(event.offsetX,  event.offsetY , this.canvas.width, this.canvas.height);
+	}
+	public getChatwindow(e){
+		this.store.dispatch(new ToggleChatWindowAction(true));
+		this.store.dispatch(new WorkerChangeAction(e));
+		console.log('inside chat window',e.toElement.id);
+
 	}
 	
 }

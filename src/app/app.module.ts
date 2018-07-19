@@ -3,6 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { declarations } from './declaration';
 import { AppComponent } from './app.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome' //check
 
 import {
   NgModule,
@@ -17,18 +23,26 @@ import {
 } from '@angularclass/hmr';
 
 import { AssetService,
-         MessageService } from './Services';
+         MessageService,
+         MySqlService } from './Services';
 import { AppState, InternalStateType } from './app.service';
-import { ChatWindowComponent } from './Component/chat-window/chat-window.component';
+import { reducers } from './reducers';
 
 const APP_PROVIDERS = [
   AppState
   ];
 
-const providers = [ AssetService ,APP_PROVIDERS];
+const providers = [ AssetService ,APP_PROVIDERS, MySqlService, MessageService];
 const imports = [
     BrowserModule,
     HttpModule,
+    FormsModule,
+    Angular2FontawesomeModule,
+    StoreModule.forRoot(reducers), // ngrx store --version ^5.0.0
+        // EffectsModule.forRoot(effects), // use later
+        StoreDevtoolsModule.instrument({
+            maxAge: 5
+    }),
   ];
   interface StoreType {
     state: InternalStateType;

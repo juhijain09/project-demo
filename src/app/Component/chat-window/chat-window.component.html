@@ -1,0 +1,29 @@
+<div class="col-4 main-chatbox " >
+<div class="row "> 
+<!-- <i class="fa fa-window-close" (click) ="CloseChatWindow()"></i> -->
+<div class="col-12 chat-window" *ngFor= "let message of messages">
+<div class= "col-12 msgbox" >
+<p>{{message.rx_chat}}</p>
+    <p class="d-flex align-items-end flex-column">{{message.sender}} • {{message.chat_date}}</p>
+</div>
+</div>
+</div>
+			<div class="row footer">
+			<div class="col-10">
+			<div class="input-group">
+			<input type="text"
+			class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-md"
+			placeholder="Write your message here..."
+			(keydown.enter)="onEnter($event)"
+			[(ngModel)]="draftMessage" />
+			<span class="input-group-btn">
+			<button type="button" class="btn btn-info" (click) = "onEnter($event)">Send</button>
+			</span>
+			</div>
+			</div>
+			<div class="col-2 "><button class="btn btn-info" (click) ="CloseChatWindow()"> close</button></div>
+			</div>
+
+
+
+</div>

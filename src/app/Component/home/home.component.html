@@ -4,6 +4,8 @@
  <canvas #myCanvas 
 style="border:1px " (click) = "getLocationPoint($event)">
 </canvas>
-
+<div *ngIf = "isChatWindowVisible$ | async">
+	<chat-window></chat-window>
+</div>
 </body>
-<!-- <chat-window></chat-window> -->
+

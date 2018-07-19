@@ -1,16 +1,22 @@
-<div class="col-4 main-chatbox " >
+<div class="col-3 main-chatbox " >
 <div class="row "> 
-<!-- <i class="fa fa-window-close" (click) ="CloseChatWindow()"></i> -->
-<div class="col-12 chat-window" *ngFor= "let message of messages">
-<div class= "col-12 msgbox" >
-<p>{{message.rx_chat}}</p>
-    <p class="d-flex align-items-end flex-column">{{message.sender}} • {{message.chat_date}}</p>
+	<div id ="header" class="card-header  col-12">
+		<span class="card-title"><i class="flaticon-worker "></i>{{currentWorker}}
+		<i class="fa fa-window-close d-flex align-items-end" (click) ="CloseChatWindow()"></i></span>	
+	</div>	
+	
+	<div #scrollMe class="scroll-chat col-12">
+		<div class="col-12 chat-window" *ngFor= "let message of messages">
+			<div class= "col-12 msgbox" >
+				<p>{{message.rx_chat}}</p>
+	    		<span class="d-flex align-items-end flex-column time-right">{{message.sender}} • {{message.chat_date}}</span>	
+			</div>	
+		</div>
+	</div>
 </div>
-</div>
-</div>
-			<div class="row footer">
-			<div class="col-10">
-			<div class="input-group">
+<div class="row footer">
+	<div class="col-10">
+		<div class="input-group">
 			<input type="text"
 			class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-md"
 			placeholder="Write your message here..."
@@ -19,11 +25,8 @@
 			<span class="input-group-btn">
 			<button type="button" class="btn btn-info" (click) = "onEnter($event)">Send</button>
 			</span>
-			</div>
-			</div>
-			<div class="col-2 "><button class="btn btn-info" (click) ="CloseChatWindow()"> close</button></div>
-			</div>
-
-
-
+		</div>
+	</div>
+			<!-- <div class="col-2 "><button class="btn btn-info" (click) ="CloseChatWindow()"> close</button></div> -->
+</div>
 </div>

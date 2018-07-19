@@ -6,36 +6,19 @@
     margin: 10px 0;
     height: auto;
     overflow: -webkit-paged-x;
+    line-height: 0.3em;
 }
-
-.darker {
-    border-color: #ccc;
-    background-color: #ddd;
+.card-header{
+    background-color: #b8dee8;
 }
-
-.container::after {
-    content: "";
-    clear: both;
-    display: table;
+.chat-window{
+    padding:0;
 }
-
-.container img {
-    float: left;
-    max-width: 60px;
-    width: 50%;
-    margin-right: 20px;
-    border-radius: 50%;
-}
-
-.container img.right {
-    float: right;
-    margin-left: 20px;
-    margin-right:0;
-}
-
 .time-right {
     /*float: right;*/
     color: #aaa;
+    font-size: 12px;
+    padding-bottom: 0;
 }
 .chat-right{
     float:right;
@@ -45,23 +28,64 @@
     float: left;
     color: #999;
 }
-.chat-window{
-/*    width: 30%;
-    float: right;*/
-}
 .main-chatbox{
-    background:#b8dee8;
-    padding: 10px;
+    background:#ffffff;
     margin-left: 10px;
-    border-radius: 10px;
-    overflow-y: scroll;
-    max-height: 50%;
+    position: absolute;
+    top:20px;
+    left:20px;
+    z-index: 2;
+    padding-bottom: 10px;
+    border:3px solid #c6c7c7;
 }
 .fa {
 font-size: 30px;
 float: right;
-padding-left:500px;
+cursor: pointer;
 }
+
 .btn-info{
     padding: 10px;
+}
+.header{
+    background:#4c6972;
+    position: absolute;
+    padding-bottom: 10px;
+    top:0;
+    z-index: 2;
+}
+.flaticon-worker:before { 
+    content: "\f100"; 
+    font-size: 20px; 
+    color:black; 
+    padding-left: 0px; 
+    cursor: auto;
+}
+.scroll-chat{
+    overflow-y: scroll;
+    max-height: 200px; 
+    overflow-x: hidden;;
+}
+.footer{
+    width: 120%;
+}
+/*webkit scroll bar*/
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
 }

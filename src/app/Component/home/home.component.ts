@@ -51,38 +51,28 @@ export class HomeComponent implements AfterViewInit {
 			this.zone[loc] = '';
 	});
 	  this.isChatWindowVisible$ = store.select(fromRoot.getChatWindowStatus);
+	  // this.ReloadBrowser();
   	}
 	@HostListener('window:resize', ['$event'])
     onResize(event){
-    this.ngAfterViewInit();
+    	this.ngAfterViewInit();
    }
   	public ngAfterViewInit() {
   	 	this.canvas = this.myCanvas.nativeElement;
   	 	this.context = this.canvas.getContext("2d");
-  	 		this.image = '../../../assets/image/flr_map.jpg';
-  	 		this.source = new Image(); 
-    		this.source.crossOrigin = 'Anonymous';
-    		this.source.onload = () => {
-    			console.log(this.source.width);
-    		this.canvas.height = window.innerHeight;
-    		this.canvas.width = window.innerWidth;
-    		this.context.drawImage(this.source, 0, 0,window.innerWidth, window.innerHeight);
-		    this.image = this.canvas.toDataURL();  
-		    		};
-    		this.source.src = this.image;
-
-  	  }
-	public ngOnInit(){
-	  this.mysqlService.getUsers()
-	  .map(res => res.json())
-	  .subscribe(records => this.records = records);
+		this.image = '../../../assets/image/flr_map.jpg';
+		this.source = new Image(); 
+		this.source.crossOrigin = 'Anonymous';
+		this.source.onload = () => {
+			this.canvas.height = window.innerHeight;
+			this.canvas.width = window.innerWidth;
+			this.context.drawImage(this.source, 0, 0,window.innerWidth, window.innerHeight);
+			this.image = this.canvas.toDataURL();  
+		};
+		this.source.src = this.image;
 		this.ReloadBrowser();
-	}
-	// public ngOnChanges(){
-	// 	console.log('inside changes window');
-	// 	this.ngAfterViewInit();
-	// 	this.ReloadBrowser();
-	// }
+  	  }
+
 	public ReloadBrowser(){
 		const apiUrl =  mainUrl + GetDeviceList;
 		this.assetService.getAssetList(apiUrl)
@@ -97,7 +87,7 @@ export class HomeComponent implements AfterViewInit {
 		 		 	console.log(' i am inside ebc4');
 		 		 	const sender = 'user6';
 		 		 	const sendto = 'user11';
-
+		 		 	// mapping of receiver will be done based on worker.
 		 		 	const msgtxt = 'Hey you have moved to ' + device.zoneName;
 		 		 	const apiUrl = SendMessage + 'sender=' + sender + '&sendto=' + sendto + '&msgtxt=' + msgtxt ;
 		 		 	this.messageService.SendMessage(apiUrl)

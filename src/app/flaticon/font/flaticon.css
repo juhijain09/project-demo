@@ -29,4 +29,4 @@
       margin-left: 20px;
 }
 
-.flaticon-worker:before { content: "\f100"; font-size: 50px; color:orange;}
+.flaticon-worker:before { content: "\f100"; font-size: 50px; color:orange; cursor: pointer;}

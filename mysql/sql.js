@@ -21,8 +21,8 @@ module.exports.addUser = function(data, callback) {
 	connection.query("INSERT INTO chat_database SET ?", data, callback);
 }
 
-module.exports.findByUsername = function(username, callback) {
-	connection.query("SELECT * FROM chat_database WHERE username = '" + username + "'", callback);
+module.exports.findByUsername = function(data, callback) {
+	connection.query("SELECT * FROM chat_database WHERE sender = '"+ data.sender +"' AND receiver = '"+ data.receiver +"' ORDER BY id DESC LIMIT 10", callback);
 }
 
 module.exports.sendResponse = function(success, res) {

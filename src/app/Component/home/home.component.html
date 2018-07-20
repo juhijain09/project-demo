@@ -5,7 +5,7 @@
 style="border:1px " (click) = "getLocationPoint($event)" >
 </canvas>
 <div *ngIf = "isChatWindowVisible$ | async">
-	<chat-window></chat-window>
+	<chat-window [SelectedWorker] = "SelectedWorker"></chat-window>
 </div>
 </body>
 

@@ -15,18 +15,25 @@
     padding:0;
 }
 .time-right {
-    /*float: right;*/
     color: #aaa;
     font-size: 12px;
-    padding-bottom: 0;
+    position: absolute;
+    top:25px;
+    right: 0;
 }
 .chat-right{
     float:right;
 }
+.chat-left{
+    float: left;
+}
 
 .time-left {
-    float: left;
-    color: #999;
+    left:0;
+    color: #aaa;
+    font-size: 12px;
+    position: absolute;
+    top:25px;
 }
 .main-chatbox{
     background:#ffffff;
@@ -67,7 +74,7 @@ cursor: pointer;
     overflow-x: hidden;;
 }
 .footer{
-    width: 120%;
+    width: 125%;
 }
 /*webkit scroll bar*/
 /* width */

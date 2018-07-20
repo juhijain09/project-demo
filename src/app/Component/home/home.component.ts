@@ -36,6 +36,7 @@ export class HomeComponent implements AfterViewInit {
 	public canvas2;
 	public isChatWindowVisible$;
 	public records;
+	public SelectedWorker;
 	@ViewChild("myCanvas") myCanvas;
 
   constructor(
@@ -224,6 +225,7 @@ export class HomeComponent implements AfterViewInit {
 	public getChatwindow(e){
 		this.store.dispatch(new ToggleChatWindowAction(true));
 		this.store.dispatch(new WorkerChangeAction(e));
+		this.SelectedWorker = e.toElement.id;
 		console.log('inside chat window',e.toElement.id);
 
 	}

@@ -7,7 +7,8 @@ import { Store } from '@ngrx/store';
 
 import { AssetService , MessageService, MySqlService} from '../../Services';
 import { mainUrl,
-        SendMessage } from '../../constants';
+        SendMessage,
+        ReceiveMessage } from '../../constants';
 import * as moment from 'moment';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,79 +18,111 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   styleUrls: ['./chat-window.component.css']
 })
 export class ChatWindowComponent implements OnInit {
-   // @Input('messages')
-   private messages : Message[];
+   @Input() private SelectedWorker;
+   public chat_records =[];
    public records;
    public workerChangeInfo$;
-   public workerData;
-   public currentWorker;
    public draftMessage:string;
+   public rcvMsg;
+   public sendMsg;
+
    @ViewChild('scrollMe') private el: ElementRef;
 
   constructor( public store: Store<fromRoot.State>,
            private mysqlService: MySqlService,
            private messageService: MessageService){
-          this.workerChangeInfo$ = store.select(fromRoot.getWorkerChangeInfo);
-          this.workerChangeInfo$.subscribe((data)=>{
-          this.workerData = data;
-          console.log('this worker data', this.workerData);
-          if(this.workerData && this.workerData.isTrusted) // change the condition
-          {
-            this.workerData.username = this.workerData.toElement.id;
-            this.currentWorker = this.workerData.toElement.id;
-          }
-        });
-        this.readMessages();
   }
-
-    ngOnInit() {
-       this.el.nativeElement.scrollTop = this.el.nativeElement.scrollHeight;
+   ngOnInit() {
+       this.ReceiveMessages();
+       // this.readDatabase();
        this.mysqlService.getUsers()
       .map(res => res.json())
-        .subscribe(records => this.records = records);
+      .subscribe(records => this.records = records);
   
     }
     ngAfterViewChecked() {        
           this.el.nativeElement.scrollTop = this.el.nativeElement.scrollHeight; 
     }
   
-  public readMessages(){
-    var Currentuserdata = this.mysqlService.findByUsername(this.workerData)
+  public readDatabase(){
+    var workerDataRcv = {
+      sender:'admin',
+      receiver: this.SelectedWorker
+    }
+    var UserdataReceived = this.mysqlService.findByUsername(workerDataRcv)
     .subscribe(res =>{
-    this.messages = res;
-    console.log('curr user data', res);
-    })
+      this.rcvMsg = res;
+    console.log('curr user data received', res);
+    });
+
+    var workerDataSent = {
+      receiver:'admin',
+      sender: this.SelectedWorker
+    }
+    var UserdataSent = this.mysqlService.findByUsername(workerDataSent)
+    .subscribe(res =>{
+      this.sendMsg = res;
+      this.chat_records = this.rcvMsg.concat(res);
+      this.chat_records =_.sortBy( this.chat_records, 'first_nom' ).reverse();
+    console.log('curr user data sent', this.chat_records);
+    });
   }
 
   public SendMessage(){
-
     const sender = 'user6';
     const sendto = 'user11';
-    const msgtxt = this.draftMessage;
-    const apiUrl = SendMessage + 'sender=' + sender + '&sendto=' + sendto + '&msgtxt=' + msgtxt ;
+    const _msgtxt = this.draftMessage;
+    const apiUrl = SendMessage + 'sender=' + sender + '&sendto=' + sendto + '&msgtxt=' + _msgtxt ;
     this.messageService.SendMessage(apiUrl)
     .subscribe((data) =>{
-      console.log('data');
-      });
-// IF MSG DELIVERED THEN SAVE TO TABLE
-    const date = new Date();
-    var data = {
-          username: this.currentWorker,
-          chat_date: moment(date).format("YYYY-MM-DD HH:mm:ss"),
-          sender:'admin',
-          rx_chat: this.draftMessage,
-          tx_chat: 'NA'
+      if(data){
+          console.log('data');
+      }
+    });  
+          const date = new Date();
+          var data = {
+          receiver: this.SelectedWorker,
+          chat_date: moment.utc(date).format("YYYY-MM-DD HH:mm:ss"), // to UTC?
+          sender: 'admin',
+          msg_txt: _msgtxt,
+          msg_status: 'outgoing'
     }
-
-    console.log('payload', data);
-     var result = this.mysqlService.addUser(data)
+        this.SaveMsgtoDB(data);
+// IF MSG DELIVERED THEN SAVE TO TABLE with delivery status
+  }
+   public ReceiveMessages(){
+     const apiUrl = ReceiveMessage + 'user11'; // should be replaced by current worker
+     this.messageService.ReceiveMessage(apiUrl)
+     .subscribe(data =>{
+       console.log('data from messages', data);
+       _.forEach(data.messages, (item) =>{
+         if(item.sender === "user11" && item.rcpt === "user6"){
+           var curr_date = moment.utc((new Date()), 'DD-MM-YYYY HH:mm:ss').unix() * 1000;
+           console.log('current in time', curr_date);
+          var _date =  moment(item.msgtime).format("YYYY-MM-DD HH:mm:ss");
+          if(item.msgtime > curr_date){
+            var data = {
+                receiver: 'admin',
+                chat_date: _date,
+                sender:  this.SelectedWorker,
+                msg_txt: item.msgtxt,
+                msg_status: 'incoming'
+              }
+           this.SaveMsgtoDB(data); 
+           }
+         }
+       });  
+     });
+       this.readDatabase(); // check where to place
+   }
+      public SaveMsgtoDB(data){
+      this.mysqlService.addUser(data)
       .subscribe(res => {
         if(res.success == "true") {
           this.records.unshift(data);
             this.draftMessage = '';
-            this.readMessages();
+            this.readDatabase();
         }
-        console.log(res);
       });
   }
     public CloseChatWindow(){
@@ -99,5 +132,4 @@ export class ChatWindowComponent implements OnInit {
       this.SendMessage();
       event.preventDefault();
     }
-
 }

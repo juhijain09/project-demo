@@ -6,10 +6,14 @@
 	</div>	
 	
 	<div #scrollMe class="scroll-chat col-12">
-		<div class="col-12 chat-window" *ngFor= "let message of messages">
-			<div class= "col-12 msgbox" >
-				<p>{{message.rx_chat}}</p>
-	    		<span class="d-flex align-items-end flex-column time-right">{{message.sender}} • {{message.chat_date}}</span>	
+		<div class="col-12 chat-window" *ngFor= "let message of chat_records">
+			<div class= "col-12 msgbox" *ngIf = "message.msg_status === 'incoming'">
+				<p class="chat-left">{{message.msg_txt}}</p>
+	    		<span class="time-right">{{message.sender}} • {{message.chat_date}}</span>	
+			</div>
+			<div class= "col-12 msgbox" *ngIf = "message.msg_status === 'outgoing'">
+				<p class="chat-right">{{message.msg_txt}}</p>
+	    		<span class="time-left">{{message.sender}} • {{message.chat_date}}</span>	
 			</div>	
 		</div>
 	</div>

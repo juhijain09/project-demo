@@ -1,11 +1,11 @@
 <body><!-- 
 	<img [src]="image" style="width: 100%">
  -->	
- <canvas #myCanvas 
-style="border:1px " (click) = "getLocationPoint($event)" >
+ <canvas #myCanvas class="myCanvas" (click) = "getLocationPoint($event)" >
 </canvas>
 <div *ngIf = "isChatWindowVisible$ | async">
 	<chat-window [SelectedWorker] = "SelectedWorker"></chat-window>
 </div>
 </body>
 
+<side-nav ></side-nav>

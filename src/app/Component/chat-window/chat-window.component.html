@@ -1,4 +1,4 @@
-<div class="col-3 main-chatbox " >
+<div class="col-lg-4 col-sm-6 main-chatbox " >
 <div class="row "> 
 	<div id ="header" class="card-header  col-12">
 		<span class="card-title"><i class="flaticon-worker "></i>{{currentWorker}}
@@ -7,17 +7,26 @@
 	
 	<div #scrollMe class="scroll-chat col-12">
 		<div class="col-12 chat-window" *ngFor= "let message of chat_records">
-			<div class= "col-12 msgbox" *ngIf = "message.msg_status === 'incoming'">
-				<p class="chat-left">{{message.msg_txt}}</p>
-	    		<span class="time-right">{{message.sender}} • {{message.chat_date}}</span>	
+			<div class= "row msgbox" >
+				<div *ngIf ="message.msg_status === 'outgoing'"  class ="col-2">
+				<div  class ="circle-left">
+				{{message.sender}}
+				</div>
+			   </div>
+			   <!-- only one class required -->
+				<div [ngClass] ="{outgoing:'chat-right col-10',incoming:'chat-left col-10'}[message.msg_status]">{{message.msg_txt}}</div> 
+
+				<div *ngIf ="message.msg_status === 'incoming'" class="col-2">
+				<div class ="circle-right">
+				{{message.sender}}
+				</div>
+			   </div>
+
+	    		<span [ngClass] ="{outgoing:'time-right',incoming:'time-left'}[message.msg_status]"> {{message.chat_date}}</span>
 			</div>
-			<div class= "col-12 msgbox" *ngIf = "message.msg_status === 'outgoing'">
-				<p class="chat-right">{{message.msg_txt}}</p>
-	    		<span class="time-left">{{message.sender}} • {{message.chat_date}}</span>	
-			</div>	
 		</div>
 	</div>
-</div>
+</div> 
 <div class="row footer">
 	<div class="col-10">
 		<div class="input-group">

@@ -1,6 +1,6 @@
-#myCanvas {
+.myCanvas {
     /* The image used */
-    background-image: url("../../../assets/image/flr_map.jpg");
+    /*background-image: url("../../../assets/image/flr_map.jpg");*/
 
     /* Full height */
     height: 100vh; 
@@ -9,6 +9,7 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain; 
+    border: 1px ;
 }
 
 .big-box {

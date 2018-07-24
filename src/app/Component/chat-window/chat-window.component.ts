@@ -25,6 +25,8 @@ export class ChatWindowComponent implements OnInit {
    public draftMessage:string;
    public rcvMsg;
    public sendMsg;
+   public latestMsgSent;
+   public latestTime;
 
    @ViewChild('scrollMe') private el: ElementRef;
 
@@ -52,7 +54,6 @@ export class ChatWindowComponent implements OnInit {
     var UserdataReceived = this.mysqlService.findByUsername(workerDataRcv)
     .subscribe(res =>{
       this.rcvMsg = res;
-    console.log('curr user data received', res);
     });
 
     var workerDataSent = {
@@ -63,8 +64,13 @@ export class ChatWindowComponent implements OnInit {
     .subscribe(res =>{
       this.sendMsg = res;
       this.chat_records = this.rcvMsg.concat(res);
-      this.chat_records =_.sortBy( this.chat_records, 'first_nom' ).reverse();
-    console.log('curr user data sent', this.chat_records);
+      this.chat_records =_.sortBy( this.chat_records, 'chat_date' );
+      _.forEach(this.chat_records, item =>{
+        item.chat_date = moment(item.chat_date).format("DD-MM-YYYY HH:mm:ss");
+      });
+    this.latestMsgSent = this.chat_records[this.chat_records.length-1];
+    this.latestTime = moment(this.latestMsgSent.chat_date,'DD-MM-YYYY HH:mm:ss').unix()*1000 
+    console.log('latest sent time', moment(this.latestMsgSent.chat_date,'DD-MM-YYYY HH:mm:ss').unix()*1000);
     });
   }
 
@@ -82,25 +88,24 @@ export class ChatWindowComponent implements OnInit {
           const date = new Date();
           var data = {
           receiver: this.SelectedWorker,
-          chat_date: moment.utc(date).format("YYYY-MM-DD HH:mm:ss"), // to UTC?
+          chat_date: moment(date).format("YYYY-MM-DD HH:mm:ss"), // to UTC?
           sender: 'admin',
           msg_txt: _msgtxt,
           msg_status: 'outgoing'
-    }
+    }     
+        console.log('payload', data);
         this.SaveMsgtoDB(data);
 // IF MSG DELIVERED THEN SAVE TO TABLE with delivery status
   }
    public ReceiveMessages(){
-     const apiUrl = ReceiveMessage + 'user11'; // should be replaced by current worker
+     const apiUrl = ReceiveMessage + 'user11';// should be replaced by current worker
      this.messageService.ReceiveMessage(apiUrl)
      .subscribe(data =>{
-       console.log('data from messages', data);
        _.forEach(data.messages, (item) =>{
          if(item.sender === "user11" && item.rcpt === "user6"){
-           var curr_date = moment.utc((new Date()), 'DD-MM-YYYY HH:mm:ss').unix() * 1000;
-           console.log('current in time', curr_date);
           var _date =  moment(item.msgtime).format("YYYY-MM-DD HH:mm:ss");
-          if(item.msgtime > curr_date){
+           // console.log('current in time', item.msgtime, _date);
+          if(item.msgtime > this.latestTime ){
             var data = {
                 receiver: 'admin',
                 chat_date: _date,
@@ -119,7 +124,7 @@ export class ChatWindowComponent implements OnInit {
       this.mysqlService.addUser(data)
       .subscribe(res => {
         if(res.success == "true") {
-          this.records.unshift(data);
+          this.records.unshift(data); //?
             this.draftMessage = '';
             this.readDatabase();
         }

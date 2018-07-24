@@ -37,6 +37,7 @@ export class HomeComponent implements AfterViewInit {
 	public isChatWindowVisible$;
 	public records;
 	public SelectedWorker;
+	public buffer;
 	@ViewChild("myCanvas") myCanvas;
 
   constructor(
@@ -52,7 +53,7 @@ export class HomeComponent implements AfterViewInit {
 			this.zone[loc] = '';
 	});
 	  this.isChatWindowVisible$ = store.select(fromRoot.getChatWindowStatus);
-	  // this.ReloadBrowser();
+	  this.ReloadBrowser();
   	}
 	@HostListener('window:resize', ['$event'])
     onResize(event){
@@ -65,13 +66,14 @@ export class HomeComponent implements AfterViewInit {
 		this.source = new Image(); 
 		this.source.crossOrigin = 'Anonymous';
 		this.source.onload = () => {
-			this.canvas.height = window.innerHeight;
+			this.canvas.height = window.innerHeight ;
 			this.canvas.width = window.innerWidth;
-			this.context.drawImage(this.source, 0, 0,window.innerWidth, window.innerHeight);
+			var image_start = (window.innerWidth)*0.15 // 15% margin
+			this.context.drawImage(this.source, image_start, 0,window.innerWidth*0.85, window.innerHeight);
 			this.image = this.canvas.toDataURL();  
 		};
 		this.source.src = this.image;
-		this.ReloadBrowser();
+		// this.ReloadBrowser();
   	  }
 
 	public ReloadBrowser(){
@@ -105,15 +107,15 @@ export class HomeComponent implements AfterViewInit {
 	public getLocationPoints(worker){
 		var max_width = this.canvas.width;
     	var max_height = this.canvas.height;
-
+    	this.buffer = max_width*0.15;
  		if (worker.zoneName === "Zone-1") {
 	    	const y_scale1 = (max_height *56)/100 ;
     		const x_scale1 = (max_width*23)/100 ;
-	    	const pos_x1 = x_scale1/2;
+	    	const pos_x1 = x_scale1/2  + this.buffer;
     		const pos_y1 = y_scale1/2;
- 			const pos_x2 = x_scale1 *0.75;
+ 			const pos_x2 = x_scale1 *0.75 + this.buffer;
  			const pos_y2 = y_scale1 * 0.25;
- 			const pos_x3 = x_scale1 *0.25;
+ 			const pos_x3 = x_scale1 *0.25 + this.buffer;
  			const pos_y3 = y_scale1 * 0.75;
  		if(worker.description === 'Wipro EBC 4'){
 			const child1 = this.renderer.createElement('div');
@@ -136,11 +138,11 @@ export class HomeComponent implements AfterViewInit {
     		const xmin_scale2 = (max_width*27)/100 
     		const xmax_scale2 = (max_width*45)/100;
     		const x_scale2 = xmax_scale2 -xmin_scale2;
-    		const pos_x1 = xmin_scale2 +x_scale2 * 0.25;
+    		const pos_x1 = (xmin_scale2 +x_scale2 * 0.10 ) + this.buffer;
     		const pos_y1 = y_scale2 * 0.2;
- 			const pos_x2 = xmin_scale2 + x_scale2 *0.75;
+ 			const pos_x2 = (xmin_scale2 + x_scale2 *0.40) + this.buffer;
  			const pos_y2 = y_scale2 * 0.5;
- 			const pos_x3 = xmin_scale2 + (xmax_scale2 -xmin_scale2) * 0.75
+ 			const pos_x3 = xmin_scale2 + (xmax_scale2 -xmin_scale2) * 0.40  + this.buffer
  			const pos_y3 = y_scale2 * 0.1;
 
  		if(worker.description === 'Wipro EBC 4'){
@@ -165,11 +167,11 @@ export class HomeComponent implements AfterViewInit {
     		var ymax_scale3 = (max_height*80)/100;
     		const y_scale3 = ymax_scale3 -ymin_scale3;
     		const pos_y1 = ymin_scale3 +y_scale3 * 0.75;
-    		const pos_x1 = x_scale3 * 0.25;
+    		const pos_x1 = x_scale3 * 0.25 + this.buffer;
  			const pos_y2 = ymin_scale3 + y_scale3 *0.25;
- 			const pos_x2 = x_scale3 * 0.75;
+ 			const pos_x2 = x_scale3 * 0.75 + this.buffer;
  			const pos_y3 = ymin_scale3 + (ymax_scale3 -ymin_scale3) * 0.75
- 			const pos_x3 = x_scale3 * 0.1;
+ 			const pos_x3 = x_scale3 * 0.1 +  this.buffer;
 
  		if(worker.description === 'Wipro EBC 4'){
 			const child1 = this.renderer.createElement('div');
@@ -192,9 +194,9 @@ export class HomeComponent implements AfterViewInit {
     		const xmin_scale4 = (max_width*55)/100 
     		const xmax_scale4 = (max_width*74)/100;
     		const x_scale4 = xmax_scale4 -xmin_scale4;
-    		const pos_x1 = xmin_scale4 +x_scale4 * 0.1;
+    		const pos_x1 = (xmin_scale4 +x_scale4 * 0.1) + this.buffer;
     		const pos_y1 = y_scale4 * 0.75;
- 			const pos_x2 = xmin_scale4 + x_scale4 *0.5;
+ 			const pos_x2 = (xmin_scale4 + x_scale4 *0.5 )+ this.buffer;
  			const pos_y2 = y_scale4 * 0.5;
  			const pos_x3 = xmin_scale4 + (xmax_scale4 -xmin_scale4) * 0.75;
  			const pos_y3 = y_scale4 * 0.25;

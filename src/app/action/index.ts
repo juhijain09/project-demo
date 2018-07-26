@@ -1,2 +1,3 @@
 export * from './chatWindow.action';
-export * from './workerChange.action';
+export * from './workerInfo.action';
+export * from './assetInfo.action';

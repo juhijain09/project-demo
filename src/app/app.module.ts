@@ -1,3 +1,4 @@
+import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -9,6 +10,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome' //check
+
+import { ROUTES } from './app.routes';
 
 import {
   NgModule,
@@ -24,19 +27,29 @@ import {
 
 import { AssetService,
          MessageService,
-         MySqlService } from './Services';
+         MySqlService,
+         PagerService } from './Services';
 import { AppState, InternalStateType } from './app.service';
 import { reducers } from './reducers';
+
 
 const APP_PROVIDERS = [
   AppState
   ];
 
-const providers = [ AssetService ,APP_PROVIDERS, MySqlService, MessageService];
+const providers = [ AssetService ,
+                    APP_PROVIDERS, 
+                    MySqlService, 
+                    MessageService,
+                    PagerService
+                  ];
 const imports = [
     BrowserModule,
     HttpModule,
     FormsModule,
+     RouterModule.forRoot(
+      ROUTES,
+      { enableTracing: true }), // <-- debugging purposes only),
     Angular2FontawesomeModule,
     StoreModule.forRoot(reducers), // ngrx store --version ^5.0.0
         // EffectsModule.forRoot(effects), // use later

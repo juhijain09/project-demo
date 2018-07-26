@@ -1,1 +1,3 @@
-2018/07/03-12:07:19.569 2650 Reusing MANIFEST /var/project/workers-safety/Default/IndexedDB/https_www.concretepage.com_0.indexeddb.leveldb/MANIFEST-000001
+2018/07/26-14:57:00.624 10183 Reusing MANIFEST /var/project/workers-safety/Default/IndexedDB/https_www.concretepage.com_0.indexeddb.leveldb/MANIFEST-000001
+2018/07/26-14:57:00.624 10183 Recovering log #3
+2018/07/26-14:57:00.624 10183 Reusing old log /var/project/workers-safety/Default/IndexedDB/https_www.concretepage.com_0.indexeddb.leveldb/000003.log 

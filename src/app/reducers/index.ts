@@ -1,15 +1,20 @@
 import * as fromChatWindowToggle from './chatWindow.reducer';
-import * as fromWorkerChange from './workerChange.reducer';
+import * as fromWorkerInfo from './workerInfo.reducer';
+import * as fromAssetInfo from './assetInfo.reducer';
 
 export interface State {
 	isChatWindowVisible: boolean;
-	workerChangeData : {};
+	workerChangeData : any[];
+	assetInfo: any[];
 }
 export const reducers = {
 	isChatWindowVisible: fromChatWindowToggle.reducer,
-	workerChangeData : fromWorkerChange.reducer
+	workerChangeData : fromWorkerInfo.reducer,
+	assetInfo : fromAssetInfo.reducer
 }
 
 export const getChatWindowStatus = (state:State) => state.isChatWindowVisible;
 
-export const getWorkerChangeInfo = (state:State) => state.workerChangeData;
+export const getWorkerInfo = (state:State) => state.workerChangeData;
+
+export const getAssetInfo = (state:State) => state.assetInfo;

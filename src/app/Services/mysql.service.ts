@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+	import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs';
@@ -11,23 +11,77 @@ export class MySqlService {
 		this.http = http;
 	}
 
-	getUsers() {
-		return this.http.get('http://localhost:3000/');
+	getAllWorkerLocation() {
+		return this.http.get('http://localhost:3000/getAllWorkerlocation')
+		.map(res =>res.json());
 	}
 
-	addUser(data) {
+	getAllAssetLocation() {
+		return this.http.get('http://localhost:3000/getAllAssetlocation')
+		.map(res =>res.json());
+	}
+
+	getWorkerMessage() {
+		return this.http.get('http://localhost:3000/getWorkerMessage')
+		.map(res =>res.json());
+	}
+
+	addWorkerMessage(data) {
+		let headers = new Headers({"Content-Type": "application/json"});
+		let options = new RequestOptions({ headers: headers });
+		console.log('add user payload', data);
+		return this.http.post('http://localhost:3000/addWorkerMessage', JSON.stringify(data), options)
+			.map(res => res.json());
+	}
+	findMessagebyName(data) {
 		let headers = new Headers({"Content-Type": "application/json"});
 		let options = new RequestOptions({ headers: headers });
 
-		return this.http.post('http://localhost:3000/adduser', JSON.stringify(data), options)
+		return this.http.post('http://localhost:3000/findMessagebyName',JSON.stringify(data), options)
 			.map(res => res.json());
 	}
-	findByUsername(data) {
+	trackByWorkername(data){
 		let headers = new Headers({"Content-Type": "application/json"});
 		let options = new RequestOptions({ headers: headers });
 
-		return this.http.post('http://localhost:3000/findByUsername',JSON.stringify(data), options)
+		return this.http.post('http://localhost:3000/trackByWorkername',JSON.stringify(data), options)
+			.map(res => res.json());
+	}
+	
+	addWorkerlocation(data) {
+		let headers = new Headers({"Content-Type": "application/json"});
+		let options = new RequestOptions({ headers: headers });
+		return this.http.post('http://localhost:3000/addWorkerlocation', JSON.stringify(data), options)
 			.map(res => res.json());
 	}
 
+	trackByWorkerlocation(data){
+		let headers = new Headers({"Content-Type": "application/json"});
+		let options = new RequestOptions({ headers: headers });
+
+		return this.http.post('http://localhost:3000/trackByWorkerlocation',JSON.stringify(data), options)
+			.map(res => res.json());
+	}
+	trackByAssetname(data){
+		let headers = new Headers({"Content-Type": "application/json"});
+		let options = new RequestOptions({ headers: headers });
+
+		return this.http.post('http://localhost:3000/trackByAssetname',JSON.stringify(data), options)
+			.map(res => res.json());
+	}
+	
+	addAssetlocation(data) {
+		let headers = new Headers({"Content-Type": "application/json"});
+		let options = new RequestOptions({ headers: headers });
+		return this.http.post('http://localhost:3000/addAssetlocation', JSON.stringify(data), options)
+			.map(res => res.json());
+	}
+
+	trackByAssetlocation(data){
+		let headers = new Headers({"Content-Type": "application/json"});
+		let options = new RequestOptions({ headers: headers });
+
+		return this.http.post('http://localhost:3000/trackByAssetlocation',JSON.stringify(data), options)
+			.map(res => res.json());
+	}
 }

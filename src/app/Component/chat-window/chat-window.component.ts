@@ -11,7 +11,8 @@ import { mainUrl,
         ReceiveMessage } from '../../constants';
 import * as moment from 'moment';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // to send data from UI
+
 @Component({
   selector: 'chat-window',
   templateUrl: './chat-window.component.html',
@@ -37,8 +38,7 @@ export class ChatWindowComponent implements OnInit {
    ngOnInit() {
        this.ReceiveMessages();
        // this.readDatabase();
-       this.mysqlService.getUsers()
-      .map(res => res.json())
+       this.mysqlService.getWorkerMessage()
       .subscribe(records => this.records = records);
   
     }
@@ -51,7 +51,7 @@ export class ChatWindowComponent implements OnInit {
       sender:'admin',
       receiver: this.SelectedWorker
     }
-    var UserdataReceived = this.mysqlService.findByUsername(workerDataRcv)
+    var UserdataReceived = this.mysqlService.findMessagebyName(workerDataRcv)
     .subscribe(res =>{
       this.rcvMsg = res;
     });
@@ -60,14 +60,16 @@ export class ChatWindowComponent implements OnInit {
       receiver:'admin',
       sender: this.SelectedWorker
     }
-    var UserdataSent = this.mysqlService.findByUsername(workerDataSent)
+    var UserdataSent = this.mysqlService.findMessagebyName(workerDataSent)
     .subscribe(res =>{
       this.sendMsg = res;
       this.chat_records = this.rcvMsg.concat(res);
       this.chat_records =_.sortBy( this.chat_records, 'chat_date' );
+      
       _.forEach(this.chat_records, item =>{
         item.chat_date = moment(item.chat_date).format("DD-MM-YYYY HH:mm:ss");
       });
+
     this.latestMsgSent = this.chat_records[this.chat_records.length-1];
     this.latestTime = moment(this.latestMsgSent.chat_date,'DD-MM-YYYY HH:mm:ss').unix()*1000 
     console.log('latest sent time', moment(this.latestMsgSent.chat_date,'DD-MM-YYYY HH:mm:ss').unix()*1000);
@@ -82,7 +84,7 @@ export class ChatWindowComponent implements OnInit {
     this.messageService.SendMessage(apiUrl)
     .subscribe((data) =>{
       if(data){
-          console.log('data');
+          // console.log(data); // if delivered save to db
       }
     });  
           const date = new Date();
@@ -95,7 +97,6 @@ export class ChatWindowComponent implements OnInit {
     }     
         console.log('payload', data);
         this.SaveMsgtoDB(data);
-// IF MSG DELIVERED THEN SAVE TO TABLE with delivery status
   }
    public ReceiveMessages(){
      const apiUrl = ReceiveMessage + 'user11';// should be replaced by current worker
@@ -121,7 +122,7 @@ export class ChatWindowComponent implements OnInit {
        this.readDatabase(); // check where to place
    }
       public SaveMsgtoDB(data){
-      this.mysqlService.addUser(data)
+      this.mysqlService.addWorkerMessage(data)
       .subscribe(res => {
         if(res.success == "true") {
           this.records.unshift(data); //?

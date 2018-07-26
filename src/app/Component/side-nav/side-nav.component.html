@@ -7,15 +7,15 @@
             <h3>Bootstrap Sidebar</h3>
         </div>
         <ul class="list-unstyled components">
-            <p>Dummy Heading</p>
-            <li class="active">
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" >Home</a>
-            </li>
             <li>
-                <a href="#">About</a>
+                <a href="#">Home</a>
             </li>
+            <li class="sidebarLi">
+                <a [routerLink]="['location-change-info']" [routerLinkActive]="['active']" data-toggle="collapse" aria-expanded="false" >Location Info</a>
+            </li>
+
             <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
+                <a [routerLink]="['task-allocation']" [routerLinkActive]="['active']" data-toggle="collapse" aria-expanded="false">Task Allocation</a>
             </li>
             <li>
                 <a href="#">Portfolio</a>

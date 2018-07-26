@@ -1,0 +1,99 @@
+<div class="container">
+  <div class="page-content">
+  <form class="form-header">
+    
+      Search By: All Workers
+      <input type="radio" name = "search" value="all" (click) = "getAllworkerData()" class="option-align" checked> 
+      <span class="workers-data" *ngIf = "dataInfo === 'WorkerInfo'">
+      zones
+      <select (change)="getInfoByWorkerLocation(x)" [(ngModel)]= "x" 
+                [ngModelOptions]="{standalone: true}" class="option-align"> 
+              <option [ngValue]="undefined" disabled  selected> --select zones-- </option>
+                <option *ngFor=" let x of Zone_W" >{{x}}</option>
+      </select>
+        workers
+      <select (change)="getInfoByWorkername(x)" [(ngModel)]= "x" 
+              [ngModelOptions]="{standalone: true}" class="option-align">
+              <option [ngValue]="undefined" disabled  selected> --select worker-- </option>
+              <option *ngFor=" let x of workerName"  >{{x}}</option>
+      </select> 
+     </span>
+
+      <!-- for assets -->
+      All assets
+      <input type="radio" name = "search" value="all" (click) = "getAllAssetData()" class="option-align"> 
+
+      <span class="assets-data" *ngIf = "dataInfo === 'AssetInfo'">
+      zones
+      <select (change)="getInfoByAssetLocation(y)" [(ngModel)]= "y" 
+                [ngModelOptions]="{standalone: true}" class="option-align"> 
+                <option [ngValue]="undefined" disabled  selected> --select zones--</option>
+                <option *ngFor=" let y of Zone_A" >{{y}}</option>
+      </select>
+        Assets
+      <select (change)="getInfoByAssetname(x)" [(ngModel)]= "x" 
+              [ngModelOptions]="{standalone: true}" class="option-align">
+              <option [ngValue]="undefined" disabled  selected> --select asset-- </option>
+              <option *ngFor=" let y of assetName"  >{{y}}</option>
+      </select> 
+     </span>
+
+  </form>
+  <table class="table table-bordered" *ngIf = "dataInfo === 'WorkerInfo'">
+    <thead>
+      <tr>
+        <th>Worker Name</th>
+        <th>Current Location</th>
+        <th>Entry Time</th>
+      </tr>
+    </thead>
+    <tbody *ngFor = " let worker of pagedItems" >
+      <tr>
+        <td>{{worker.worker_name}}</td>
+        <td>{{worker.current_location}}</td>
+        <td>{{worker.entry_time}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+    <table class="table table-bordered" *ngIf = "dataInfo === 'AssetInfo'">
+    <thead>
+      <tr>
+        <th>Asset Name</th>
+        <th>Current Location</th>
+        <th>Entry Time</th>
+      </tr>
+    </thead>
+    <tbody *ngFor = " let asset of pagedItems" >
+      <tr>
+        <td>{{asset.asset_name}}</td>
+        <td>{{asset.current_location}}</td>
+        <td>{{asset.entry_time}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+              <!-- pager -->
+  <div class="container ">
+     <ul class="pagination" *ngIf="pager.pages && pager.pages.length" >
+     <li [ngClass]="{disabled:pager.currentPage === 1}">
+         <a (click)="setPage(1)">First</a>
+     </li>
+     <li [ngClass]="{disabled:pager.currentPage === 1}">
+         <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+     </li>
+      <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+         <a (click)="setPage(page)">{{page}}</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+         <a (click)="setPage(pager.currentPage + 1)">Next</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+         <a (click)="setPage(pager.totalPages)">Last</a>
+      </li>
+      </ul>
+</div>
+</div>
+</div>

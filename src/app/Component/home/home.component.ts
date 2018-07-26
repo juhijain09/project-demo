@@ -8,10 +8,11 @@ import { AssetService , MessageService, MySqlService} from '../../Services';
 import { mainUrl,
  		 GetDeviceList,
  		 assetName,
+ 		 WorkerName,
  		 SendMessage } from '../../constants';
 import { AssetDataParser } from '../../parser';
 
-import { ToggleChatWindowAction, WorkerChangeAction } from '../../action';
+import { ToggleChatWindowAction } from '../../action';
 import { HostListener } from '@angular/core'
 
 import * as moment from 'moment';
@@ -24,7 +25,7 @@ import * as moment from 'moment';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements AfterViewInit {
-	public assetData;
+	public assetData$;
 	public zone =[];
 	public context:CanvasRenderingContext2D;
 	public image;
@@ -48,11 +49,17 @@ export class HomeComponent implements AfterViewInit {
 	  private renderer: Renderer2, 
 	  @Inject(DOCUMENT) private document,
 	  public store: Store<fromRoot.State>) {
-	
-		_.forEach(assetName , (loc)=>{
+		// why required?
+		_.forEach(WorkerName , (loc)=>{
 			this.zone[loc] = '';
 	});
 	  this.isChatWindowVisible$ = store.select(fromRoot.getChatWindowStatus);
+	  this.isChatWindowVisible$
+	  .subscribe((data) =>{
+	  	console.log('data from chatwindow', data);
+	  })
+
+
 	  this.ReloadBrowser();
   	}
 	@HostListener('window:resize', ['$event'])
@@ -78,16 +85,14 @@ export class HomeComponent implements AfterViewInit {
 
 	public ReloadBrowser(){
 		const apiUrl =  mainUrl + GetDeviceList;
-		this.assetService.getAssetList(apiUrl)
+		// this.assetService.getAssetList(apiUrl)
+		this.store.select(fromRoot.getWorkerInfo)
 		.subscribe((data) => {
-
-			console.log('data',data);
-		 	this.assetData = AssetDataParser(data);
-		 	_.forEach(this.assetData, (device)=>{
+		 	console.log('data from home',data);
+		 	_.forEach(data, (device)=>{
 		 		 if(this.zone[device.description] !== device.zoneName){
 		 		 	this.getLocationPoints(device);
 		 		 	if(device.description === 'Wipro EBC 4'){
-		 		 	console.log(' i am inside ebc4');
 		 		 	const sender = 'user6';
 		 		 	const sendto = 'user11';
 		 		 	// mapping of receiver will be done based on worker.
@@ -226,10 +231,7 @@ export class HomeComponent implements AfterViewInit {
 	}
 	public getChatwindow(e){
 		this.store.dispatch(new ToggleChatWindowAction(true));
-		this.store.dispatch(new WorkerChangeAction(e));
 		this.SelectedWorker = e.toElement.id;
-		console.log('inside chat window',e.toElement.id);
-
 	}
 	
 }

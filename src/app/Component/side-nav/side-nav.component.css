@@ -41,10 +41,13 @@ a, a:hover, a:focus {
     background: #fff;
 }
 
-#sidebar ul li.active > a, a[aria-expanded="true"] {
+#sidebar ul li.active  {
     color: #fff;
     background: #6d7fcc;
 }
+/* .sidebarLi .active{
+    background: white;
+}*/
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;

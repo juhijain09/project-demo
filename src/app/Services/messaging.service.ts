@@ -21,14 +21,13 @@ export class MessageService {
   public SendMessage(apiUrl){
   	return this.setRequestObject(apiUrl)
   	.map((response) =>{
-  		console.log('response from message', response);
   		return response.json();
   	});
   }
   public ReceiveMessage(apiUrl){
      return this.setRequestObject(apiUrl)
+    // .repeatWhen(() => Observable.interval(6000))
     .map((response) =>{
-      console.log('response from message', response);
       return response.json();
     });
   }

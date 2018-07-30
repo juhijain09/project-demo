@@ -5,6 +5,6 @@ export const ASSET_INFO = '[AssetData] Info';
 export class AssetInfoAction implements Action{
 	type = ASSET_INFO;
 
-	constructor(public payload: any[]){}
+	constructor(public payload: any){}
 
 }

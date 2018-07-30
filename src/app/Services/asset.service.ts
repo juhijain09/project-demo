@@ -24,6 +24,7 @@ export class AssetService {
                          // headers.append('Access-Control-Allow-Methods', 'GET');
       const options = new RequestOptions({headers});
       let requestObj = this.http.get(apiUrl, options);
+            console.log('inside the service',requestObj);
       return requestObj;
   }
     public getAssetList(apiUrl){

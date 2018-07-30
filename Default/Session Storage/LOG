@@ -1,15 +1,3 @@
-2018/07/26-11:13:06.525 20255 Reusing MANIFEST /var/project/workers-safety/Default/Session Storage/MANIFEST-000001
-2018/07/26-11:13:06.525 20255 Recovering log #51
-2018/07/26-11:13:06.526 20255 Reusing old log /var/project/workers-safety/Default/Session Storage/000051.log 
-2018/07/26-13:07:38.026 32173 Level-0 table #56: started
-2018/07/26-13:07:38.125 32173 Level-0 table #56: 15935 bytes OK
-2018/07/26-13:07:38.175 32173 Delete type=0 #51
-2018/07/26-14:48:52.518 32173 Compacting 1@1 + 1@2 files
-2018/07/26-14:48:52.600 32173 Generated table #57@1: 47 keys, 2208 bytes
-2018/07/26-14:48:52.600 32173 Compacted 1@1 + 1@2 files => 2208 bytes
-2018/07/26-14:48:52.650 32173 compacted to: files[ 0 0 1 0 0 0 0 ]
-2018/07/26-14:48:52.651 32173 Delete type=2 #53
-2018/07/26-14:48:52.652 32173 Delete type=2 #56
-2018/07/26-18:46:31.918 32173 Level-0 table #59: started
-2018/07/26-18:46:32.035 32173 Level-0 table #59: 18180 bytes OK
-2018/07/26-18:46:32.068 32173 Delete type=0 #55
+2018/07/30-13:27:51.245 7964 Reusing MANIFEST /var/project/workers-safety/Default/Session Storage/MANIFEST-000001
+2018/07/30-13:27:51.245 7964 Recovering log #62
+2018/07/30-13:27:51.245 7964 Reusing old log /var/project/workers-safety/Default/Session Storage/000062.log 

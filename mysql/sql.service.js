@@ -27,6 +27,13 @@ app.get('/getWorkerMessage', function(req, res) {
 	})
 });
 
+app.get('/getChatBaseDBlength', function(req, res) {
+	user.getChatBaseDBlength(function(err, rows, fields) {
+		if(err) throw err;
+		res.json(rows);
+	})
+});
+
 app.post('/addWorkerMessage', function(req, res, next) {	
 			var data = req.body;
 			console.log(data);
@@ -37,7 +44,8 @@ app.post('/addWorkerMessage', function(req, res, next) {
          		chat_date: data.chat_date,
          		sender: data.sender,
          		msg_txt: data.msg_txt,
-         		msg_status: data.msg_status
+         		msg_status: data.msg_status,
+         		alias: data.alias
 				};
 					if(err) throw err;
 					console.log(info);
@@ -47,13 +55,15 @@ app.post('/addWorkerMessage', function(req, res, next) {
 });
 app.post('/addWorkerlocation', function(req, res, next) {	
 			var data = req.body;
-			console.log(data);
+			console.log('from add worker_name',data);
 			user.addWorkerLocation(data, function(err, info) {
 				console.log(data);
 				data = {
          		worker_name: data.worker_name,
          		current_location: data.current_location,
          		entry_time: data.entry_time,
+         		alias: data.alias,
+         		skill: data.skill
 				};
 					if(err) throw err;
 					console.log(info);
@@ -90,6 +100,13 @@ app.post('/findMessagebyName', function(req, res, next){
 app.post('/trackByWorkername', function(req, res, next){
 	var data = req.body;
 	user.trackByWorkername(data, function(err, rows, fields) {
+		if(err) throw err;
+		res.json(rows)
+    });
+}); 
+app.post('/trackByWorkerSkill', function(req, res, next){
+	var data = req.body;
+	user.trackByWorkerSkill(data, function(err, rows, fields) {
 		if(err) throw err;
 		res.json(rows)
     });

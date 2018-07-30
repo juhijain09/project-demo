@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { assetProperties, assetName, WorkerName } from '../constants';
+import { assetProperties, assetName, WorkerName, WorkersSkills } from '../constants';
 
 export function AssetDataParser(data){
   const dataitems = data;
@@ -29,9 +29,12 @@ export function AssetDataParser(data){
         assetData.push(item);
       }
       if(WorkerName.indexOf(item.description)!== -1){
+        var worker = _.find(WorkersSkills, ['name', item.description]);
+        item.skill =  worker.skill;
+        item.alias = worker.alias;
         workerData.push(item);
       }
     })
      	console.log('result', assetData, workerData);
      	return {assetData, workerData};
-}
+};

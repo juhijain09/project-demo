@@ -30,52 +30,56 @@ export class LocationChangeInfoComponent {
   				private mysqlService: MySqlService,
   				private assetService: AssetService,
           private pagerService: PagerService,
-  				public store: Store<fromRoot.State>) { 	
-          const apiUrl =  mainUrl + GetDeviceList;
-          this.addWorkerDataDB();
-          this.addAssetDataDB();
+  				public store: Store<fromRoot.State>) { 	     
+          this.addWorkerDataDB();        
 			}
 
   public addWorkerDataDB(){
+          // const apiUrl =  mainUrl + GetDeviceList;  
            // from the api
            // this.assetService.getAssetList(apiUrl)
           this.store.select(fromRoot.getWorkerInfo)
           .subscribe((data)=>{
             _.forEach(data, (item)=>{
+              console.log('add worker', item);
               var payload = {
               worker_name: item.description,
               entry_time : moment(item.updatedAt).format("YYYY-MM-DD HH:mm:ss"),
-              current_location : item.zoneName
+              current_location : item.zoneName,
+              alias: item.alias,
+              skill: item.skill
             }; 
-            this.getAllworkerData();
-              // this.mysqlService.addWorkerlocation(payload)
-              // .subscribe(res =>{
-              //   console.log('data from add location', res);
-              //   if(res.success === 'true'){
-              //     this.getAllworkerData();
-              //   }
-              // });
+            // this.getAllworkerData();
+              this.mysqlService.addWorkerlocation(payload)
+              .subscribe(res =>{
+                console.log('data from add location', res);
+                if(res.success === 'true'){
+                  this.getAllworkerData();
+                }
+              });
           });
        }); 
   }
    public addAssetDataDB(){
            // from the api
-           // this.assetService.getAssetList(apiUrl)
+          // const apiUrl =  mainUrl + GetDeviceList; 
+          //  this.assetService.getAssetList(apiUrl);
           this.store.select(fromRoot.getAssetInfo)
           .subscribe((data)=>{
             _.forEach(data, (item)=>{
+              console.log('add asset', item);
               var payload = {
               asset_name: item.description,
               entry_time : moment(item.updatedAt).format("YYYY-MM-DD HH:mm:ss"),
               current_location : item.zoneName
             }; 
-              // this.mysqlService.addAssetlocation(payload)
-              // .subscribe(res =>{
-              //   console.log('data from add asset', res);
-              //   if(res.success === 'true'){
-              //     this.getAllAssetData();
-              //   }
-              // });
+              this.mysqlService.addAssetlocation(payload)
+              .subscribe(res =>{
+                console.log('data from add asset', res);
+                if(res.success === 'true'){
+                  // this.getAllAssetData();
+                }
+              });
           });
        }); 
   }
@@ -121,7 +125,7 @@ export class LocationChangeInfoComponent {
   public getInfoByAssetname(username){
     this.dataInfo = 'AssetInfo';
       var payload = {
-        asset_name:username
+        asset_name: username
       }
         // get user by name
     this.mysqlService.trackByAssetname(payload)
@@ -145,6 +149,7 @@ export class LocationChangeInfoComponent {
 
   /// from sql query
     public getAllAssetData(){
+         this.addAssetDataDB();
          this.dataInfo = 'AssetInfo';
          this.mysqlService.getAllAssetLocation()
         .subscribe(data =>{

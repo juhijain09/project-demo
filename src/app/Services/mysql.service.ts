@@ -25,6 +25,10 @@ export class MySqlService {
 		return this.http.get('http://localhost:3000/getWorkerMessage')
 		.map(res =>res.json());
 	}
+	getChatBaseDBlength() {
+		return this.http.get('http://localhost:3000/getChatBaseDBlength')
+		.map(res =>res.json());
+	}
 
 	addWorkerMessage(data) {
 		let headers = new Headers({"Content-Type": "application/json"});
@@ -63,6 +67,7 @@ export class MySqlService {
 			.map(res => res.json());
 	}
 	trackByAssetname(data){
+		console.log(' payload by location', data);
 		let headers = new Headers({"Content-Type": "application/json"});
 		let options = new RequestOptions({ headers: headers });
 

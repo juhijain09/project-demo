@@ -8,7 +8,8 @@ import { Store } from '@ngrx/store';
 import { AssetService , MessageService, MySqlService} from '../../Services';
 import { mainUrl,
         SendMessage,
-        ReceiveMessage } from '../../constants';
+        ReceiveMessage,
+        WorkersSkills } from '../../constants';
 import * as moment from 'moment';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // to send data from UI
@@ -28,25 +29,41 @@ export class ChatWindowComponent implements OnInit {
    public sendMsg;
    public latestMsgSent;
    public latestTime;
+   public alias;
+   public dbLength;
 
    @ViewChild('scrollMe') private el: ElementRef;
 
   constructor( public store: Store<fromRoot.State>,
            private mysqlService: MySqlService,
            private messageService: MessageService){
+         this.mysqlService.getChatBaseDBlength()
+        .subscribe(res =>{
+          this.dbLength = res;
+          console.log('db length', this.dbLength[0].RowCnt);
+          if(this.dbLength && this.dbLength[0].RowCnt > 1){
+          this.readDatabase();
+          }
+        });
+
   }
    ngOnInit() {
-       this.ReceiveMessages();
-       // this.readDatabase();
+      console.log('workerskill', this.SelectedWorker);
+      var worker = _.find(WorkersSkills, ['id', this.SelectedWorker]);
+      this.alias = worker.alias;
+
+       this.ReceiveMessages(); // where to place
        this.mysqlService.getWorkerMessage()
       .subscribe(records => this.records = records);
   
     }
     ngAfterViewChecked() {        
-          this.el.nativeElement.scrollTop = this.el.nativeElement.scrollHeight; 
+       this.el.nativeElement.scrollTop = this.el.nativeElement.scrollHeight; 
     }
   
   public readDatabase(){
+    //check if the length of db is not zero
+    console.log('read database', this.dbLength);
     var workerDataRcv = {
       sender:'admin',
       receiver: this.SelectedWorker
@@ -65,10 +82,12 @@ export class ChatWindowComponent implements OnInit {
       this.sendMsg = res;
       this.chat_records = this.rcvMsg.concat(res);
       this.chat_records =_.sortBy( this.chat_records, 'chat_date' );
-      
-      _.forEach(this.chat_records, item =>{
-        item.chat_date = moment(item.chat_date).format("DD-MM-YYYY HH:mm:ss");
+        if(this.chat_records){
+          _.forEach(this.chat_records, item =>{
+          item.chat_date = moment(item.chat_date).format("DD-MM-YYYY HH:mm:ss");
       });
+
+        }
 
     this.latestMsgSent = this.chat_records[this.chat_records.length-1];
     this.latestTime = moment(this.latestMsgSent.chat_date,'DD-MM-YYYY HH:mm:ss').unix()*1000 
@@ -93,7 +112,8 @@ export class ChatWindowComponent implements OnInit {
           chat_date: moment(date).format("YYYY-MM-DD HH:mm:ss"), // to UTC?
           sender: 'admin',
           msg_txt: _msgtxt,
-          msg_status: 'outgoing'
+          msg_status: 'outgoing',
+          alias: this.alias
     }     
         console.log('payload', data);
         this.SaveMsgtoDB(data);
@@ -105,25 +125,26 @@ export class ChatWindowComponent implements OnInit {
        _.forEach(data.messages, (item) =>{
          if(item.sender === "user11" && item.rcpt === "user6"){
           var _date =  moment(item.msgtime).format("YYYY-MM-DD HH:mm:ss");
-           // console.log('current in time', item.msgtime, _date);
+           console.log('current in time', item.msgtime, _date);
           if(item.msgtime > this.latestTime ){
             var data = {
                 receiver: 'admin',
                 chat_date: _date,
                 sender:  this.SelectedWorker,
                 msg_txt: item.msgtxt,
-                msg_status: 'incoming'
+                msg_status: 'incoming',
+                alias: this.alias
               }
            this.SaveMsgtoDB(data); 
            }
          }
        });  
      });
-       this.readDatabase(); // check where to place
+       // this.readDatabase(); // check where to place
    }
       public SaveMsgtoDB(data){
       this.mysqlService.addWorkerMessage(data)
-      .subscribe(res => {
+      .subscribe(res => { 
         if(res.success == "true") {
           this.records.unshift(data); //?
             this.draftMessage = '';

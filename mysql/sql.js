@@ -41,6 +41,9 @@ module.exports.findMessagebyName = function(data, callback) {
 module.exports.trackByWorkername = function(data, callback) {
 	connection.query("SELECT * FROM worker_Info WHERE worker_name = '"+ data.worker_name +"' ORDER BY id DESC LIMIT 10", callback);
 }
+module.exports.trackByWorkerSkill = function(data, callback) {
+	connection.query("SELECT * FROM worker_Info WHERE skill = '"+ data.skill +"' ORDER BY id DESC LIMIT 10", callback);
+}
 module.exports.trackByWorkerlocation = function(data, callback) {
 	connection.query("SELECT * FROM worker_Info WHERE current_location = '"+ data.current_location +"' ORDER BY id DESC LIMIT 10", callback);
 }
@@ -50,6 +53,9 @@ module.exports.trackByAssetname = function(data, callback) {
 }
 module.exports.trackByAssetlocation = function(data, callback) {
 	connection.query("SELECT * FROM asset_InfoTable WHERE current_location = '"+ data.current_location +"' ORDER BY id DESC LIMIT 10", callback);
+}
+module.exports.getChatBaseDBlength = function(callback) {
+	connection.query("SELECT COUNT(*) AS RowCnt FROM chat_database",callback);
 }
 module.exports.sendResponse = function(success, res) {
 	if(success) {

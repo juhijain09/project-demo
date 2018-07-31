@@ -29,7 +29,7 @@ export class AssetService {
   }
     public getAssetList(apiUrl){
       return this.setRequestObject(apiUrl)
-      // .repeatWhen(() => Observable.interval(2000))
+      // .repeatWhen(() => Observable.interval(20000))
       .map((response)=>{
         console.log('I am here', response.json());
         var assetData = AssetDataParser(response.json());

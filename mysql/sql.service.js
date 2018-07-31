@@ -33,6 +33,18 @@ app.get('/getChatBaseDBlength', function(req, res) {
 		res.json(rows);
 	})
 });
+app.get('/getWorkerTablelength', function(req, res) {
+	user.getWorkerInfoTablelength(function(err, rows, fields) {
+		if(err) throw err;
+		res.json(rows);
+	})
+});
+app.get('/getAssetTablelength', function(req, res) {
+	user.getAssetInfoTablelength(function(err, rows, fields) {
+		if(err) throw err;
+		res.json(rows);
+	})
+});
 
 app.post('/addWorkerMessage', function(req, res, next) {	
 			var data = req.body;
@@ -63,7 +75,8 @@ app.post('/addWorkerlocation', function(req, res, next) {
          		current_location: data.current_location,
          		entry_time: data.entry_time,
          		alias: data.alias,
-         		skill: data.skill
+         		skill: data.skill,
+         		exit_time: data.exit_time
 				};
 					if(err) throw err;
 					console.log(info);
@@ -81,6 +94,7 @@ app.post('/addAssetlocation', function(req, res, next) {
          		asset_name: data.asset_name,
          		current_location: data.current_location,
          		entry_time: data.entry_time,
+         		exit_time: data.exit_time
 				};
 					if(err) throw err;
 					console.log(info);

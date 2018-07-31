@@ -118,10 +118,10 @@ export class HomeComponent implements AfterViewInit {
     		const x_scale1 = (max_width*23)/100 ;
 	    	const pos_x1 = x_scale1/2  + this.buffer;
     		const pos_y1 = y_scale1/2;
- 			const pos_x2 = x_scale1 *0.75 + this.buffer;
+ 			const pos_x2 = x_scale1 *0.60 + this.buffer;
  			const pos_y2 = y_scale1 * 0.25;
  			const pos_x3 = x_scale1 *0.25 + this.buffer;
- 			const pos_y3 = y_scale1 * 0.75;
+ 			const pos_y3 = y_scale1 * 0.70;
  		if(worker.description === 'Wipro EBC 4'){
 			const child1 = this.renderer.createElement('div');
 			child1.innerHTML ='<div style="position:absolute;  left:'+pos_x1+'px; top:'+pos_y1+'px;"><i class="flaticon-worker"  id = "Wipro-EBC-4" ></i>  <div>'+worker.description+'</div><div>';
@@ -174,11 +174,11 @@ export class HomeComponent implements AfterViewInit {
     		var ymax_scale3 = (max_height*80)/100;
     		const y_scale3 = ymax_scale3 -ymin_scale3;
     		const pos_y1 = ymin_scale3 +y_scale3 * 0.75;
-    		const pos_x1 = x_scale3 * 0.25 + this.buffer;
+    		const pos_x1 = x_scale3 * 0.3 + this.buffer;
  			const pos_y2 = ymin_scale3 + y_scale3 *0.25;
- 			const pos_x2 = x_scale3 * 0.75 + this.buffer;
+ 			const pos_x2 = x_scale3 * 0.6 + this.buffer;
  			const pos_y3 = ymin_scale3 + (ymax_scale3 -ymin_scale3) * 0.75
- 			const pos_x3 = x_scale3 * 0.1 +  this.buffer;
+ 			const pos_x3 = x_scale3 * 0.09 +  this.buffer;
 
  		if(worker.description === 'Wipro EBC 4'){
 			const child1 = this.renderer.createElement('div');

@@ -1,3 +1,24 @@
 2018/07/30-13:27:51.245 7964 Reusing MANIFEST /var/project/workers-safety/Default/Session Storage/MANIFEST-000001
 2018/07/30-13:27:51.245 7964 Recovering log #62
 2018/07/30-13:27:51.245 7964 Reusing old log /var/project/workers-safety/Default/Session Storage/000062.log 
+2018/07/30-16:01:01.536 22090 Level-0 table #66: started
+2018/07/30-16:01:01.630 22090 Level-0 table #66: 123593 bytes OK
+2018/07/30-16:01:01.664 22090 Delete type=0 #62
+2018/07/30-16:01:58.028 22090 Level-0 table #68: started
+2018/07/30-16:01:58.112 22090 Level-0 table #68: 146374 bytes OK
+2018/07/30-16:01:58.162 22090 Delete type=0 #65
+2018/07/30-16:12:45.361 22090 Level-0 table #70: started
+2018/07/30-16:12:45.469 22090 Level-0 table #70: 149754 bytes OK
+2018/07/30-16:12:45.510 22090 Delete type=0 #67
+2018/07/31-11:24:37.675 22090 Level-0 table #72: started
+2018/07/31-11:24:37.781 22090 Level-0 table #72: 117574 bytes OK
+2018/07/31-11:24:37.823 22090 Delete type=0 #69
+2018/07/31-11:24:37.823 22090 Compacting 4@0 + 1@1 files
+2018/07/31-11:24:37.882 22090 Generated table #73@0: 641 keys, 424314 bytes
+2018/07/31-11:24:37.882 22090 Compacted 4@0 + 1@1 files => 424314 bytes
+2018/07/31-11:24:37.923 22090 compacted to: files[ 0 1 1 0 0 0 0 ]
+2018/07/31-11:24:37.924 22090 Delete type=2 #68
+2018/07/31-11:24:37.924 22090 Delete type=2 #70
+2018/07/31-11:24:37.924 22090 Delete type=2 #63
+2018/07/31-11:24:37.924 22090 Delete type=2 #66
+2018/07/31-11:24:37.924 22090 Delete type=2 #72

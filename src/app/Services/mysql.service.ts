@@ -29,7 +29,14 @@ export class MySqlService {
 		return this.http.get('http://localhost:3000/getChatBaseDBlength')
 		.map(res =>res.json());
 	}
-
+	getWorkerTablelength() {
+		return this.http.get('http://localhost:3000/getWorkerTablelength')
+		.map(res =>res.json());
+	}
+	getAssetTablelength() {
+		return this.http.get('http://localhost:3000/getAssetTablelength')
+		.map(res =>res.json());
+	}
 	addWorkerMessage(data) {
 		let headers = new Headers({"Content-Type": "application/json"});
 		let options = new RequestOptions({ headers: headers });
@@ -45,6 +52,7 @@ export class MySqlService {
 			.map(res => res.json());
 	}
 	trackByWorkername(data){
+		console.log(' payload by name', data);
 		let headers = new Headers({"Content-Type": "application/json"});
 		let options = new RequestOptions({ headers: headers });
 
@@ -67,7 +75,6 @@ export class MySqlService {
 			.map(res => res.json());
 	}
 	trackByAssetname(data){
-		console.log(' payload by location', data);
 		let headers = new Headers({"Content-Type": "application/json"});
 		let options = new RequestOptions({ headers: headers });
 

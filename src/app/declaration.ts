@@ -5,6 +5,8 @@ import { MainScreenComponent } from './Component/main-screen';
 import { SideNavComponent } from './Component/side-nav';
 import { LocationChangeInfoComponent } from './Component/location-change-info';
 import { TaskAllocationComponent } from './Component/task-allocation';
+import { TrackAssetsComponent } from './Component/location-change-info/track-assets/track-assets.component';
+import { TrackWorkersComponent } from './Component/location-change-info/track-workers/track-workers.component';
 
 export const declarations = [
 							AppComponent,
@@ -13,5 +15,7 @@ export const declarations = [
 							MainScreenComponent,
 							SideNavComponent,
 							LocationChangeInfoComponent,
-							TaskAllocationComponent
+							TaskAllocationComponent,
+							TrackAssetsComponent,
+							TrackWorkersComponent
 							];

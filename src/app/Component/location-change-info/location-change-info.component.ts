@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 
-import { MySqlService, AssetService, PagerService} from '../../Services';
 import { 
 		mainUrl , zoneName, assetName, WorkerName, GetDeviceList  } from '../../constants';
 import * as fromRoot from '../../reducers';
 import { Store } from '@ngrx/store';
 import * as moment from 'moment'; 
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';// to send data from UI
+import { AssetService , MessageService, MySqlService} from '../../Services';
+import { AssetEntryAction, WorkerEntryAction } from '../../action';
 
  
 @Component({
@@ -16,158 +17,76 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
   styleUrls: ['./location-change-info.component.css']
 })
 export class LocationChangeInfoComponent {
-		public workerData$;
-		public workerLocInfo;
-    public Zone_A = zoneName;
-    public Zone_W = zoneName;
-    public workerName = WorkerName;
-    public assetName = assetName;
-    public allItems :any[];
-    public pager:any = {};
-    public pagedItems:any[]
-    public dataInfo = 'WorkerInfo';
-  constructor(
-  				private mysqlService: MySqlService,
-  				private assetService: AssetService,
-          private pagerService: PagerService,
-  				public store: Store<fromRoot.State>) { 	     
-          this.addWorkerDataDB();        
-			}
+  public WorkerEntry = [];
+  public AssetEntry = [];
+  public countW = 0;
+  public countA = 0;
+  public dbLength;
 
-  public addWorkerDataDB(){
-          // const apiUrl =  mainUrl + GetDeviceList;  
-           // from the api
-           // this.assetService.getAssetList(apiUrl)
-          this.store.select(fromRoot.getWorkerInfo)
-          .subscribe((data)=>{
-            _.forEach(data, (item)=>{
-              console.log('add worker', item);
-              var payload = {
-              worker_name: item.description,
-              entry_time : moment(item.updatedAt).format("YYYY-MM-DD HH:mm:ss"),
-              current_location : item.zoneName,
-              alias: item.alias,
-              skill: item.skill
-            }; 
-            // this.getAllworkerData();
-              this.mysqlService.addWorkerlocation(payload)
-              .subscribe(res =>{
-                console.log('data from add location', res);
-                if(res.success === 'true'){
-                  this.getAllworkerData();
-                }
-              });
-          });
-       }); 
-  }
-   public addAssetDataDB(){
-           // from the api
-          // const apiUrl =  mainUrl + GetDeviceList; 
-          //  this.assetService.getAssetList(apiUrl);
-          this.store.select(fromRoot.getAssetInfo)
-          .subscribe((data)=>{
-            _.forEach(data, (item)=>{
-              console.log('add asset', item);
-              var payload = {
-              asset_name: item.description,
-              entry_time : moment(item.updatedAt).format("YYYY-MM-DD HH:mm:ss"),
-              current_location : item.zoneName
-            }; 
-              this.mysqlService.addAssetlocation(payload)
-              .subscribe(res =>{
-                console.log('data from add asset', res);
-                if(res.success === 'true'){
-                  // this.getAllAssetData();
-                }
-              });
-          });
-       }); 
-  }
-	public getInfoByWorkername(username){
-    this.dataInfo = 'WorkerInfo';
-  		var payload = {
-  			worker_name:username
-  		}
-				// get user by name
-		this.mysqlService.trackByWorkername(payload)
-		.subscribe(data =>{
-			this.workerLocInfo = data;
-      this.setPage(1);
-		});		
-  }
-  	public getInfoByWorkerLocation(location){
-      this.dataInfo = 'WorkerInfo';
-  		console.log('location val', location);
-  		var payload = {
-  			current_location:location
-  		}
-				// get user by location
-		 this.mysqlService.trackByWorkerlocation(payload)
-		.subscribe(data =>{
-		 this.workerLocInfo = data;
-       this.setPage(1);
-		});		
-  }
+          constructor(
+          private mysqlService: MySqlService,
+          private messageService: MessageService,
+          private assetService: AssetService, 
+          public store: Store<fromRoot.State>) { 
 
-  /// from sql query
-  	public getAllworkerData(){
-      this.dataInfo = 'WorkerInfo';
-				 this.mysqlService.getAllWorkerLocation()
-				.subscribe(data =>{
-				 this.workerLocInfo = data;
-  				_.forEach(this.workerLocInfo, item =>{
-  				  item.entry_time = moment(item.entry_time).format("DD-MM-YYYY HH:mm:ss");
-  			});  this.setPage(1);		
-		});     
-  }
-
-// ASSET QUERIES
-  public getInfoByAssetname(username){
-    this.dataInfo = 'AssetInfo';
-      var payload = {
-        asset_name: username
+         this.mysqlService.getWorkerTablelength()
+        .subscribe(res =>{
+          this.dbLength = res;
+          if(this.dbLength && this.dbLength[0].RowCnt > 1){
+          _.forEach(WorkerName,(item)=>{
+          this.getWorkerLast_entry(item);
+        }); 
+      } 
+    });
+         this.mysqlService.getAssetTablelength()
+        .subscribe(res =>{
+          this.dbLength = res;
+          if(this.dbLength && this.dbLength[0].RowCnt > 1){
+          _.forEach(assetName,(item)=>{
+          this.getAssetLast_entry(item);
+        }); 
       }
-        // get user by name
+    });           
+	}
+      public getWorkerLast_entry(username){
+       this.countW++;
+      var payload = {
+        worker_name:username
+      }
+    this.mysqlService.trackByWorkername(payload)
+    .subscribe(data =>{
+      if(data[0]){
+        this.WorkerEntry[username] = 
+        {
+          location:data[0].current_location,
+          exit_time: data[0].entry_time,
+        };
+      }
+      if(this.countW === WorkerName.length){
+        this.store.dispatch(new WorkerEntryAction(this.WorkerEntry));
+      }
+    });
+  }
+      public getAssetLast_entry(username){
+      this.countA++;
+      var payload = {
+        asset_name:username
+      }
     this.mysqlService.trackByAssetname(payload)
     .subscribe(data =>{
-      this.workerLocInfo = data;
-      this.setPage(1);
-    });    
-  }
-    public getInfoByAssetLocation(location){
-      this.dataInfo = 'AssetInfo';
-      var payload = {
-        current_location:location
+      if(data[0]){
+        this.AssetEntry[username] = 
+        {
+          location:data[0].current_location,
+          exit_time: data[0].entry_time
+        };
+        }
+      if(this.countA === assetName.length){
+         this.store.dispatch(new AssetEntryAction(this.AssetEntry));
       }
-        // get user by location
-     this.mysqlService.trackByAssetlocation(payload)
-    .subscribe(data =>{
-     this.workerLocInfo = data;
-       this.setPage(1);
-    });    
+    });
   }
-
-  /// from sql query
-    public getAllAssetData(){
-         this.addAssetDataDB();
-         this.dataInfo = 'AssetInfo';
-         this.mysqlService.getAllAssetLocation()
-        .subscribe(data =>{
-         this.workerLocInfo = data;
-          _.forEach(this.workerLocInfo, item =>{
-            item.entry_time = moment(item.entry_time).format("DD-MM-YYYY HH:mm:ss");
-        });  this.setPage(1);    
-    });     
-  }
-
-      public setPage(page: number) {
-        console.log('worker info', this.workerLocInfo);
-        // get pager object from service
-        this.pager = this.pagerService.getPager(this.workerLocInfo.length, page);
- 
-        // get current page of items
-        this.pagedItems = this.workerLocInfo.slice(this.pager.startIndex, this.pager.endIndex + 1);
-        console.log('paged items', this.pagedItems);
-    }
 }
 
+
+ 

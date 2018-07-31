@@ -45,7 +45,7 @@ export class ChatWindowComponent implements OnInit {
           this.readDatabase();
           }
         });
-
+        // this.ReceiveMessages();
   }
    ngOnInit() {
       console.log('workerskill', this.SelectedWorker);

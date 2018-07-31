@@ -1,5 +1,5 @@
 {
-   "checksum": "5add31e5ff2cd288e2fbe22893917c3f",
+   "checksum": "def4aaef16f833fcd9ed900e4cba1ad6",
    "roots": {
       "bookmark_bar": {
          "children": [ {
@@ -8,9 +8,18 @@
             "name": "javascript - How to Draw on Image Angular2 Ionic2 - Stack Overflow",
             "type": "url",
             "url": "https://stackoverflow.com/questions/37873043/how-to-draw-on-image-angular2-ionic2"
+         }, {
+            "date_added": "13175333815174023",
+            "id": "7",
+            "meta_info": {
+               "last_visited_desktop": "13175333815177048"
+            },
+            "name": "apt - 407 Proxy Authentication Required - Ask Ubuntu",
+            "type": "url",
+            "url": "https://askubuntu.com/questions/88976/407-proxy-authentication-required"
          } ],
          "date_added": "13174558255425948",
-         "date_modified": "13174664216335951",
+         "date_modified": "13175333815174023",
          "id": "1",
          "name": "Bookmarks bar",
          "type": "folder"

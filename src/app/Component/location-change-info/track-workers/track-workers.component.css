@@ -1,0 +1,25 @@
+.container{
+	margin-left: 15%;
+}
+.form-header{
+	padding: 20px;
+	background-color: #b9b9b9;
+    border: 1px solid;
+}
+.tr .td .th{
+	border:1px solid;
+}
+.option-align{
+	margin-right: 10px;
+	font-weight: bold;
+}
+.workers-data{
+	padding: 20px;
+}
+.assets-data{
+	padding: 20px;
+}
+.page-content{
+	width: max-content;
+
+}

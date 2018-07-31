@@ -26,7 +26,7 @@ export class MessageService {
   }
   public ReceiveMessage(apiUrl){
      return this.setRequestObject(apiUrl)
-    // .repeatWhen(() => Observable.interval(6000))
+    .repeatWhen(() => Observable.interval(20000))
     .map((response) =>{
       return response.json();
     });

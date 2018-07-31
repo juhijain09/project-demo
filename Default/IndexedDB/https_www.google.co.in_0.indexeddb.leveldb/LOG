@@ -1,3 +1,3 @@
-2018/07/30-13:27:51.337 7962 Reusing MANIFEST /var/project/workers-safety/Default/IndexedDB/https_www.google.co.in_0.indexeddb.leveldb/MANIFEST-000001
-2018/07/30-13:27:51.337 7962 Recovering log #3
-2018/07/30-13:27:51.337 7962 Reusing old log /var/project/workers-safety/Default/IndexedDB/https_www.google.co.in_0.indexeddb.leveldb/000003.log 
+2018/07/31-15:02:48.321 344 Reusing MANIFEST /var/project/workers-safety/Default/IndexedDB/https_www.google.co.in_0.indexeddb.leveldb/MANIFEST-000001
+2018/07/31-15:02:48.321 344 Recovering log #3
+2018/07/31-15:02:48.321 344 Reusing old log /var/project/workers-safety/Default/IndexedDB/https_www.google.co.in_0.indexeddb.leveldb/000003.log 

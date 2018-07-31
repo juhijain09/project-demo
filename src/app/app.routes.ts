@@ -6,9 +6,16 @@ import { MainScreenComponent } from './Component/main-screen';
 import { SideNavComponent } from './Component/side-nav';
 import { LocationChangeInfoComponent } from './Component/location-change-info';
 import { TaskAllocationComponent } from './Component/task-allocation';
+import { TrackAssetsComponent } from './Component/location-change-info/track-assets';
+import { TrackWorkersComponent } from './Component/location-change-info/track-workers';
 
 export const ROUTES:Routes =[
-{path:'location-change-info',component:LocationChangeInfoComponent },
+{path:'location-change-info',component:LocationChangeInfoComponent , 
+		children: [
+		  {path:'track-assets',component: TrackAssetsComponent},
+		  {path:'track-workers',component: TrackWorkersComponent},
+		]		
+},
 {path:'app-home', component:HomeComponent },
-{path:'task-allocation', component:TaskAllocationComponent }
+{path:'task-allocation', component:TaskAllocationComponent },
 ]

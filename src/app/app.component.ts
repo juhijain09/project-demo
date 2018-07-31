@@ -10,7 +10,9 @@ import {
 	    	mainUrl,
         SendMessage,
         ReceiveMessage,
-        GetDeviceList } from './constants';
+        GetDeviceList,
+        WorkerName,
+        assetName } from './constants';
 import {  WorkerInfoAction, AssetInfoAction } from './action';
 
 
@@ -21,6 +23,7 @@ import {  WorkerInfoAction, AssetInfoAction } from './action';
 })
 export class AppComponent {
   title = 'app';
+  
   constructor(	private router:Router,
   				private mysqlService: MySqlService,
   				private messageService: MessageService,
@@ -39,4 +42,6 @@ export class AppComponent {
   public ngOnInit(){
   	this.router.navigate(['app-home']);
   }
+
+
 }

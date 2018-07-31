@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="page-content">
+  <form class="form-header">
+
+      <!-- for assets -->
+      
+      <span class="workers-data">
+      zones
+      <select (change)="getInfoByWorkerLocation(x)" [(ngModel)]= "x" 
+                [ngModelOptions]="{standalone: true}" class="option-align"> 
+              <option [ngValue]="undefined" disabled  selected> --select zones-- </option>
+                <option *ngFor=" let x of Zone_W" >{{x}}</option>
+      </select>
+        workers
+      <select (change)="getInfoByWorkername(x)" [(ngModel)]= "x" 
+              [ngModelOptions]="{standalone: true}" class="option-align">
+              <option [ngValue]="undefined" disabled  selected> --select worker-- </option>
+              <option *ngFor=" let x of workerName"  >{{x}}</option>
+      </select> 
+     </span>
+  </form>
+  <table class="table table-bordered" >
+    <thead>
+      <tr>
+        <th>Worker Name</th>
+        <th>Current Location</th>
+        <th>Entry Time</th>
+        <th>Skill</th>
+        <th>Worker Id</th>
+        <th>Exit Time</th>
+      </tr>
+    </thead>
+    <tbody *ngFor = " let worker of pagedItems" >
+      <tr>
+        <td>{{worker.alias}}</td>
+        <td>{{worker.current_location}}</td>
+        <td>{{worker.entry_time}}</td>
+        <td>{{worker.skill}}</td>
+        <td>{{worker.worker_name}}</td>
+        <td>{{worker.exit_time}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+              <!-- pager -->
+  <div class="container ">
+     <ul class="pagination" *ngIf="pager.pages && pager.pages.length" >
+     <li [ngClass]="{disabled:pager.currentPage === 1}">
+         <a (click)="setPage(1)">First</a>
+     </li>
+     <li [ngClass]="{disabled:pager.currentPage === 1}">
+         <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+     </li>
+      <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+         <a (click)="setPage(page)">{{page}}</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+         <a (click)="setPage(pager.currentPage + 1)">Next</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+         <a (click)="setPage(pager.totalPages)">Last</a>
+      </li>
+      </ul>
+</div>
+</div>
+</div>
+

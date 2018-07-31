@@ -5,6 +5,9 @@
          "children": [ {
             "date_added": "13174664216335951",
             "id": "5",
+            "meta_info": {
+               "last_visited_desktop": "13177490124383470"
+            },
             "name": "javascript - How to Draw on Image Angular2 Ionic2 - Stack Overflow",
             "type": "url",
             "url": "https://stackoverflow.com/questions/37873043/how-to-draw-on-image-angular2-ionic2"

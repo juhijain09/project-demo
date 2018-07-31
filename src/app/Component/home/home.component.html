@@ -3,7 +3,7 @@
  -->	
  <canvas #myCanvas class="myCanvas" (click) = "getLocationPoint($event)" >
 </canvas>
-<div *ngIf = "isChatWindowVisible$ | async">
+<div #chatwindow *ngIf = "isChatWindowVisible$ | async">
 	<chat-window [SelectedWorker] = "SelectedWorker"></chat-window>
 </div>
 </body>

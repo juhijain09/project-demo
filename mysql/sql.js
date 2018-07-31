@@ -57,6 +57,12 @@ module.exports.trackByAssetlocation = function(data, callback) {
 module.exports.getChatBaseDBlength = function(callback) {
 	connection.query("SELECT COUNT(*) AS RowCnt FROM chat_database",callback);
 }
+module.exports.getWorkerInfoTablelength = function(callback) {
+	connection.query("SELECT COUNT(*) AS RowCnt FROM worker_Info",callback);
+}
+module.exports.getAssetInfoTablelength = function(callback) {
+	connection.query("SELECT COUNT(*) AS RowCnt FROM asset_InfoTable",callback);
+}
 module.exports.sendResponse = function(success, res) {
 	if(success) {
 		res.send({'success': 'true'});
